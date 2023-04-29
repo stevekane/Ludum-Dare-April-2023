@@ -3,6 +3,7 @@ using System.Collections;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using UnityEngine;
 
 public delegate Task TaskFunc(TaskScope scope);
 public delegate Task<T> TaskFunc<T>(TaskScope scope);
@@ -226,6 +227,7 @@ public class TaskScope : IDisposable {
 
 public static class Waiter {
   public static TaskFunc Millis(int ms) => s => s.Millis(ms);
+  public static TaskFunc Ticks(int t) => s => s.Ticks(t);
   public static TaskFunc Forever() => s => s.Forever();
   public static TaskFunc Delay(Timeval t) => s => s.Delay(t);
   public static TaskFunc While(Func<bool> pred) => s => s.While(pred);

@@ -17,6 +17,9 @@ public class Player : MonoBehaviour {
   [SerializeField] string MediumKickName = "Front Kick";
   [SerializeField] string LowKickName = "Low Kick";
   [SerializeField] string TossName = "Toss";
+  [SerializeField] string TossWindupName = "Toss Windup";
+  [SerializeField] string TossChargeName = "Toss Charge Loop";
+  [SerializeField] string TossReleaseName = "Toss Release";
   [SerializeField] string[] CheerNames = new string[3] { "Cheering", "Rally", "Clapping" };
   [Header("Transforms")]
   [SerializeField] Transform AimTransform;
@@ -24,6 +27,8 @@ public class Player : MonoBehaviour {
   [Header("Controls")]
   [SerializeField] float TurnSpeed;
   [Header("Properties")]
+  [SerializeField] Timeval TossChargeMinDuration = Timeval.FromAnimFrames(30, 60);
+  [SerializeField] Timeval TossChargeMaxDuration = Timeval.FromAnimFrames(90, 60);
   [SerializeField] float SwingForce;
   [SerializeField] float LaunchHeight;
   [SerializeField] float ContactRadius = 1;
@@ -45,8 +50,12 @@ public class Player : MonoBehaviour {
   PlayerActions Actions;
   TaskScope Scope;
   Ball Ball;
+  EventSource ServeReleased = new();
+  EventSource SwingReleased = new();
+  ChargeTimer TossCharge = new();
 
   bool CanAim => true;
+  // TODO: Multiple balls
   bool CanServe => (Ball == null || Ball.transform.position.y < 0) && !Serving && !Swinging;
   bool CanSwing => (Ball != null && Ball.transform.position.y > 0) && !Serving && !Swinging;
 
@@ -54,8 +63,10 @@ public class Player : MonoBehaviour {
     Animator.enabled = false;
     Scope = new();
     Actions = new();
-    Actions.InGame.Serve.performed += Serve;
+    Actions.InGame.Serve.started += Serve;
+    Actions.InGame.Serve.canceled += ctx => ServeReleased.Fire();
     Actions.InGame.Swing.performed += Swing;
+    Actions.InGame.Swing.canceled += ctx => SwingReleased.Fire();
   }
 
   void OnDestroy() {
@@ -88,13 +99,21 @@ public class Player : MonoBehaviour {
     transform.rotation *= Quaternion.Euler(0, axis.x * Time.fixedDeltaTime * TurnSpeed, 0);
   }
 
-  public void Serve(InputAction.CallbackContext ctx) {
-    Animator.CrossFadeInFixedTime(TossName, .25f, 0);
+  public async void Serve(InputAction.CallbackContext ctx) {
+    Animator.CrossFadeInFixedTime(TossWindupName, .25f, 0);
+    var released = Scope.ListenFor(ServeReleased);
+    await Scope.Delay(TossChargeMinDuration);
+    Animator.CrossFade(TossChargeName, .0f, 0);
+    await Scope.Any(
+      s => TossCharge.Ticks(s, TossChargeMaxDuration.Ticks),
+      s => released);
     Serving = true;
+    Animator.CrossFade(TossReleaseName, .0f, 0);
   }
 
   public void LaunchBall() {
-    var velocity = Vector3.up * Mathf.Sqrt(2 * Mathf.Abs(Physics.gravity.y) * LaunchHeight);
+    var chargeFactor = 1f + TossCharge.ElapsedPercent;
+    var velocity = Vector3.up * Mathf.Sqrt(2 * Mathf.Abs(Physics.gravity.y) * LaunchHeight * chargeFactor);
     Ball = Instantiate(BallPrefab, LaunchTransform.position, LaunchTransform.rotation);
     Ball.GetComponent<Rigidbody>().velocity = velocity;
     Destroy(Ball, 10);
@@ -127,7 +146,9 @@ public class Player : MonoBehaviour {
     try {
       Swinging = true;
       Animator.CrossFadeInFixedTime(HighKickName, .1f, 0);
-      await scope.Ticks(30);
+      await scope.Any(
+        Waiter.Ticks(30),
+        Waiter.ListenFor(ServeReleased));
       Animator.CrossFadeInFixedTime(IdleName, .25f, 0);
     } finally {
       Swinging = false;

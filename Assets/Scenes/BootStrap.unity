@@ -141,7 +141,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &14399183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -348,6 +348,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6857788192064577062, guid: b1f9c18a1783e9943b010ad282664a9e,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.0014586975
+      objectReference: {fileID: 0}
+    - target: {fileID: -6857788192064577062, guid: b1f9c18a1783e9943b010ad282664a9e,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.06080891
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b1f9c18a1783e9943b010ad282664a9e,
         type: 3}
       propertyPath: m_Name
@@ -372,6 +382,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_ApplyRootMotion
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6502182839619065283, guid: b1f9c18a1783e9943b010ad282664a9e,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.0010098194
+      objectReference: {fileID: 0}
+    - target: {fileID: 6502182839619065283, guid: b1f9c18a1783e9943b010ad282664a9e,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.08165815
       objectReference: {fileID: 0}
     - target: {fileID: 7833114641849259454, guid: b1f9c18a1783e9943b010ad282664a9e,
         type: 3}
@@ -1159,6 +1179,9 @@ MonoBehaviour:
   MediumKickName: Front Kick
   LowKickName: Low Kick
   TossName: Toss
+  TossWindupName: Toss Windup
+  TossChargeName: Toss Charge Loop
+  TossReleaseName: Toss Release
   CheerNames:
   - Cheering
   - Rallying
@@ -1166,6 +1189,12 @@ MonoBehaviour:
   AimTransform: {fileID: 1646989112}
   LaunchTransform: {fileID: 356728469}
   TurnSpeed: 90
+  TossChargeMinDuration:
+    Millis: 500
+    FramesPerSecond: 60
+  TossChargeMaxDuration:
+    Millis: 1500
+    FramesPerSecond: 60
   SwingForce: 20
   LaunchHeight: 3
   ContactRadius: 1
@@ -1475,7 +1504,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
   m_PivotOffset: {x: 0, y: 0, z: 0}
-  m_AmplitudeGain: 0.0003660072
+  m_AmplitudeGain: 1.278634
   m_FrequencyGain: 1
   mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &1357045218
@@ -1846,7 +1875,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh188880
+  m_Name: pb_Mesh-401080
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
