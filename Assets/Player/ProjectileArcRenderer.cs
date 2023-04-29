@@ -21,24 +21,25 @@ public class ProjectileArcRenderer : MonoBehaviour {
 
   public void Render(Vector3 position, Vector3 velocity) {
     bool didHit = false;
-    Vector3 hitFrom = default;
-    Vector3 hitTo = default;
+    Vector3 hitStart = default;
+    Vector3 hitPoint = default;
     for (var i = 0; i < positions.Length; i++) {
       positions[i] = position;
       velocity += Time.fixedDeltaTime * Physics.gravity;
       position += Time.fixedDeltaTime * velocity;
       var delta = position - positions[i];
-      var hit = Physics.Raycast(positions[i], delta.normalized, out var rayHit, delta.magnitude, LayerMask, QueryTriggerInteraction.Collide);
+      var hit = Physics.Raycast(positions[i], delta.normalized, out var rayHit, delta.magnitude, LayerMask);
       if (!didHit && hit) {
+        var toHitPoint = rayHit.point - positions[i];
         didHit = true;
-        hitFrom = positions[i] - delta.normalized * 5;
-        hitTo = position;
+        hitStart = rayHit.point-toHitPoint.normalized;
+        hitPoint = rayHit.point;
       }
     }
     if (didHit) {
       ContactIndicator.SetActive(true);
-      ContactIndicator.transform.position = hitFrom;
-      ContactIndicator.transform.LookAt(hitTo);
+      ContactIndicator.transform.position = hitStart;
+      ContactIndicator.transform.LookAt(hitPoint);
     } else {
       ContactIndicator.SetActive(false);
     }
