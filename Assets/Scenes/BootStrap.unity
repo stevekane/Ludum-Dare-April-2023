@@ -1188,6 +1188,7 @@ MonoBehaviour:
   - Clapping
   AimTransform: {fileID: 1646989112}
   LaunchTransform: {fileID: 356728469}
+  ContactTransform: {fileID: 0}
   TurnSpeed: 90
   TossChargeMinDuration:
     Millis: 500
@@ -1202,6 +1203,9 @@ MonoBehaviour:
   ContactHitStopDuration:
     Millis: 333.33334
     FramesPerSecond: 60
+  BallLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
   BallPrefab: {fileID: 5545995844932723750, guid: e7d0d2b3a327ee34bb3433595eacc58a,
     type: 3}
   HitVFXPrefab: {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7,
@@ -1504,7 +1508,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
   m_PivotOffset: {x: 0, y: 0, z: 0}
-  m_AmplitudeGain: 1.278634
+  m_AmplitudeGain: 0.1713451
   m_FrequencyGain: 1
   mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &1357045218
@@ -1875,7 +1879,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-401080
+  m_Name: pb_Mesh-468132
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
