@@ -27,6 +27,8 @@ public class Player : MonoBehaviour {
   [SerializeField] float SwingForce;
   [SerializeField] float LaunchHeight;
   [SerializeField] float ContactRadius = 1;
+  [SerializeField] float ContactCameraShakeIntensity = 20;
+  [SerializeField] Timeval ContactHitStopDuration = Timeval.FromSeconds(.5f);
   [Header("Prefabs")]
   [SerializeField] Ball BallPrefab;
   [SerializeField] GameObject HitVFXPrefab;
@@ -109,11 +111,11 @@ public class Player : MonoBehaviour {
   public void Contact() {
     Swinging = false;
     if (Ball && Vector3.Distance(Ball.transform.position, LaunchTransform.position) < ContactRadius) {
-      HitStopFrames = 20;
-      CameraShaker.Instance.Shake(10);
+      HitStopFrames = ContactHitStopDuration.Ticks;
+      CameraShaker.Instance.Shake(ContactCameraShakeIntensity);
       AudioSource.PlayOneShot(HitSFX);
       Destroy(Instantiate(HitVFXPrefab, Ball.transform.position, transform.rotation), 3);
-      Ball.HitStopFrames = 20;
+      Ball.HitStopFrames = ContactHitStopDuration.Ticks;
       Ball.StoredVelocity = SwingForce * AimTransform.forward;
       Ball.TrailRenderer.enabled = true;
     }
