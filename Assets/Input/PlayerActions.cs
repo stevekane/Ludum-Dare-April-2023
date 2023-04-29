@@ -49,7 +49,7 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                     ""name"": ""Aim"",
                     ""type"": ""Value"",
                     ""id"": ""ac3f4491-a9ec-4419-829e-54d3b02f238f"",
-                    ""expectedControlType"": ""Stick"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": ""StickDeadzone"",
                     ""interactions"": """",
                     ""initialStateCheck"": true
@@ -62,7 +62,7 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Base"",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Serve"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -73,7 +73,7 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Base"",
+                    ""groups"": ""Keyboard+Mouse"",
                     ""action"": ""Serve"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -84,7 +84,7 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Base"",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Swing"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -95,7 +95,18 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Base"",
+                    ""groups"": ""Keyboard+Mouse"",
+                    ""action"": ""Swing"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d4f6570c-ebef-4ae1-b1c5-948f1fd4bceb"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard+Mouse"",
                     ""action"": ""Swing"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -106,8 +117,30 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/leftStick"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Base"",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Aim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e2634c48-9b55-4d5f-8b02-a62317a04f92"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": ""InvertVector2(invertX=false),ScaleVector2(x=0.5,y=0.5)"",
+                    ""groups"": ""Keyboard+Mouse"",
+                    ""action"": ""Aim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0c7636ee-70d7-4c52-8f36-97f67ffe3d4d"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard+Mouse"",
+                    ""action"": ""Serve"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -116,9 +149,31 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
     ],
     ""controlSchemes"": [
         {
-            ""name"": ""Base"",
-            ""bindingGroup"": ""Base"",
-            ""devices"": []
+            ""name"": ""Gamepad"",
+            ""bindingGroup"": ""Gamepad"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Gamepad>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Keyboard+Mouse"",
+            ""bindingGroup"": ""Keyboard+Mouse"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Mouse>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                },
+                {
+                    ""devicePath"": ""<Keyboard>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
         }
     ]
 }");
@@ -231,13 +286,22 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
         }
     }
     public InGameActions @InGame => new InGameActions(this);
-    private int m_BaseSchemeIndex = -1;
-    public InputControlScheme BaseScheme
+    private int m_GamepadSchemeIndex = -1;
+    public InputControlScheme GamepadScheme
     {
         get
         {
-            if (m_BaseSchemeIndex == -1) m_BaseSchemeIndex = asset.FindControlSchemeIndex("Base");
-            return asset.controlSchemes[m_BaseSchemeIndex];
+            if (m_GamepadSchemeIndex == -1) m_GamepadSchemeIndex = asset.FindControlSchemeIndex("Gamepad");
+            return asset.controlSchemes[m_GamepadSchemeIndex];
+        }
+    }
+    private int m_KeyboardMouseSchemeIndex = -1;
+    public InputControlScheme KeyboardMouseScheme
+    {
+        get
+        {
+            if (m_KeyboardMouseSchemeIndex == -1) m_KeyboardMouseSchemeIndex = asset.FindControlSchemeIndex("Keyboard+Mouse");
+            return asset.controlSchemes[m_KeyboardMouseSchemeIndex];
         }
     }
     public interface IInGameActions
