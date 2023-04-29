@@ -31,7 +31,7 @@ public class ProjectileArcRenderer : MonoBehaviour {
       var hit = Physics.Raycast(positions[i], delta.normalized, out var rayHit, delta.magnitude, LayerMask, QueryTriggerInteraction.Collide);
       if (!didHit && hit) {
         didHit = true;
-        hitFrom = positions[i];
+        hitFrom = positions[i] - delta.normalized * 5;
         hitTo = position;
       }
     }

@@ -10,27 +10,45 @@ public class Player : MonoBehaviour {
       action.Disable();
   }
 
+  [Header("Animation")]
+  [SerializeField] Animator Animator;
+  [SerializeField] string IdleName = "Idle";
+  [SerializeField] string HighKickName = "High Kick";
+  [SerializeField] string MediumKickName = "Front Kick";
+  [SerializeField] string LowKickName = "Low Kick";
+  [SerializeField] string TossName = "Toss";
+  [SerializeField] string[] CheerNames = new string[3] { "Cheering", "Rally", "Clapping" };
+  [Header("Transforms")]
   [SerializeField] Transform AimTransform;
   [SerializeField] Transform LaunchTransform;
+  [Header("Controls")]
   [SerializeField] float TurnSpeed;
+  [Header("Properties")]
   [SerializeField] float SwingForce;
   [SerializeField] float LaunchHeight;
-  [SerializeField] Timeval SwingDuration;
-  [SerializeField] GameObject BallPrefab;
-  [SerializeField] Animator Animator;
+  [Header("Prefabs")]
+  [SerializeField] Ball BallPrefab;
+  [SerializeField] GameObject HitVFXPrefab;
+  [Header("Audio")]
+  [SerializeField] AudioClip HitSFX;
+  [Header("Components")]
   [SerializeField] ProjectileArcRenderer ProjectileArcRenderer;
+  [SerializeField] LocalTimeScale LocalTimeScale;
+  [SerializeField] AudioSource AudioSource;
 
+  int HitStopFrames;
   bool Serving;
   bool Swinging;
   PlayerActions Actions;
   TaskScope Scope;
-  GameObject Ball;
+  Ball Ball;
 
   bool CanAim => true;
   bool CanServe => (Ball == null || Ball.transform.position.y < 0) && !Serving && !Swinging;
   bool CanSwing => (Ball != null && Ball.transform.position.y > 0) && !Serving && !Swinging;
 
   void Start() {
+    Animator.enabled = false;
     Scope = new();
     Actions = new();
     Actions.InGame.Serve.performed += Serve;
@@ -52,6 +70,9 @@ public class Player : MonoBehaviour {
     } else {
       ProjectileArcRenderer.Hide();
     }
+    LocalTimeScale.Value = HitStopFrames > 0 ? 0 : 1;
+    Animator.Update(Time.fixedDeltaTime * LocalTimeScale.Value);
+    HitStopFrames = Mathf.Max(0, HitStopFrames-1);
   }
 
   public void Aim() {
@@ -65,7 +86,7 @@ public class Player : MonoBehaviour {
   }
 
   public void Serve(InputAction.CallbackContext ctx) {
-    Animator.CrossFadeInFixedTime("Serve", .25f, 0);
+    Animator.CrossFadeInFixedTime(TossName, .25f, 0);
     Serving = true;
   }
 
@@ -73,24 +94,40 @@ public class Player : MonoBehaviour {
     var velocity = Vector3.up * Mathf.Sqrt(2 * Mathf.Abs(Physics.gravity.y) * LaunchHeight);
     Ball = Instantiate(BallPrefab, LaunchTransform.position, LaunchTransform.rotation);
     Ball.GetComponent<Rigidbody>().velocity = velocity;
+  }
+
+  public void EndServe() {
+    Animator.CrossFade(IdleName, .25f, 0);
     Serving = false;
-    Animator.CrossFade("Idle", .25f, 0);
   }
 
   public void Swing(InputAction.CallbackContext ctx) {
-    if (!Swinging)
-      Scope.Run(SwingTask);
+    Scope.Run(SwingTask);
+  }
+
+  public void Contact() {
+    Swinging = false;
   }
 
   async Task SwingTask(TaskScope scope) {
-    Swinging = true;
-    Animator.Play("Swing", 0);
-    if (Ball && Vector3.Distance(Ball.transform.position, LaunchTransform.position) < 2) {
-      Ball.GetComponent<Rigidbody>().velocity = SwingForce * AimTransform.forward;
+    try {
+      Swinging = true;
+      Animator.CrossFadeInFixedTime(HighKickName, .1f, 0);
+      await scope.Until(() => !Swinging);
+      if (Ball && Vector3.Distance(Ball.transform.position, LaunchTransform.position) < 2) {
+        HitStopFrames = 20;
+        CameraShaker.Instance.Shake(10);
+        AudioSource.PlayOneShot(HitSFX);
+        Destroy(Instantiate(HitVFXPrefab, Ball.transform.position, transform.rotation), 3);
+        Ball.HitStopFrames = 20;
+        Ball.StoredVelocity = SwingForce * AimTransform.forward;
+        Ball.TrailRenderer.enabled = true;
+      }
       Ball = null;
+      await scope.Ticks(30);
+      Animator.CrossFadeInFixedTime(IdleName, .25f, 0);
+    } finally {
+      Swinging = false;
     }
-    await scope.Ticks(SwingDuration.Ticks);
-    Animator.CrossFadeInFixedTime("Idle", .25f, 0);
-    Swinging = false;
   }
 }
