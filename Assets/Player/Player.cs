@@ -26,6 +26,9 @@ public class Player : MonoBehaviour {
   [Header("Properties")]
   [SerializeField] float SwingForce;
   [SerializeField] float LaunchHeight;
+  [SerializeField] float ContactRadius = 1;
+  [SerializeField] float ContactCameraShakeIntensity = 20;
+  [SerializeField] Timeval ContactHitStopDuration = Timeval.FromSeconds(.5f);
   [Header("Prefabs")]
   [SerializeField] Ball BallPrefab;
   [SerializeField] GameObject HitVFXPrefab;
@@ -107,27 +110,31 @@ public class Player : MonoBehaviour {
 
   public void Contact() {
     Swinging = false;
+    if (Ball && Vector3.Distance(Ball.transform.position, LaunchTransform.position) < ContactRadius) {
+      HitStopFrames = ContactHitStopDuration.Ticks;
+      CameraShaker.Instance.Shake(ContactCameraShakeIntensity);
+      AudioSource.PlayOneShot(HitSFX);
+      Destroy(Instantiate(HitVFXPrefab, Ball.transform.position, transform.rotation), 3);
+      Ball.HitStopFrames = ContactHitStopDuration.Ticks;
+      Ball.StoredVelocity = SwingForce * AimTransform.forward;
+      Ball.TrailRenderer.enabled = true;
+    }
+    Ball = null;
   }
 
   async Task SwingTask(TaskScope scope) {
     try {
       Swinging = true;
       Animator.CrossFadeInFixedTime(HighKickName, .1f, 0);
-      await scope.Until(() => !Swinging);
-      if (Ball && Vector3.Distance(Ball.transform.position, LaunchTransform.position) < 2) {
-        HitStopFrames = 20;
-        CameraShaker.Instance.Shake(10);
-        AudioSource.PlayOneShot(HitSFX);
-        Destroy(Instantiate(HitVFXPrefab, Ball.transform.position, transform.rotation), 3);
-        Ball.HitStopFrames = 20;
-        Ball.StoredVelocity = SwingForce * AimTransform.forward;
-        Ball.TrailRenderer.enabled = true;
-      }
-      Ball = null;
       await scope.Ticks(30);
       Animator.CrossFadeInFixedTime(IdleName, .25f, 0);
     } finally {
       Swinging = false;
     }
+  }
+
+  void OnDrawGizmos() {
+    Gizmos.color = Color.green;
+    Gizmos.DrawWireSphere(LaunchTransform.position, ContactRadius);
   }
 }
