@@ -8,11 +8,11 @@ public class Ball : MonoBehaviour {
   public Vector3 StoredVelocity;
 
   void Start() {
-    FindObjectOfType<CinemachineTargetGroup>().AddMember(transform, 1, 1);
+    FindObjectOfType<CinemachineTargetGroup>()?.AddMember(transform, 1, 1);
   }
 
   void OnDestroy() {
-    FindObjectOfType<CinemachineTargetGroup>().RemoveMember(transform);
+    FindObjectOfType<CinemachineTargetGroup>()?.RemoveMember(transform);
   }
 
   void FixedUpdate() {

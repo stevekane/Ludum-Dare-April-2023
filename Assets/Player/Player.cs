@@ -97,6 +97,7 @@ public class Player : MonoBehaviour {
     var velocity = Vector3.up * Mathf.Sqrt(2 * Mathf.Abs(Physics.gravity.y) * LaunchHeight);
     Ball = Instantiate(BallPrefab, LaunchTransform.position, LaunchTransform.rotation);
     Ball.GetComponent<Rigidbody>().velocity = velocity;
+    Destroy(Ball, 10);
   }
 
   public void EndServe() {
