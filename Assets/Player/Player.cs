@@ -59,6 +59,19 @@ public class Player : MonoBehaviour {
   bool CanServe => (Ball == null || Ball.transform.position.y < 0) && !Serving && !Swinging;
   bool CanSwing => (Ball != null && Ball.transform.position.y > 0) && !Serving && !Swinging;
 
+  /*
+  How about instead of charging we just scale the playback of the toss animation
+  during the windup.
+
+  If the button is held down, we increase the power up to max power.
+  When the button is released, we
+
+  This is more like a Jump. Quick tap will result in minimum jump.
+  Press will result in a stronger Throw that scales up to some max.
+  The AnimationEvent will fire indicating the end of charging.
+  The release will be ignored
+  */
+
   void Start() {
     Animator.enabled = false;
     Scope = new();
