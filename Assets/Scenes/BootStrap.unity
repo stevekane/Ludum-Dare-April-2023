@@ -1161,7 +1161,7 @@ MonoBehaviour:
   TossName: Toss
   CheerNames:
   - Cheering
-  - Rally
+  - Rallying
   - Clapping
   AimTransform: {fileID: 1646989112}
   LaunchTransform: {fileID: 356728469}
@@ -1475,7 +1475,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
   m_PivotOffset: {x: 0, y: 0, z: 0}
-  m_AmplitudeGain: 0.2801727
+  m_AmplitudeGain: 0.0003660072
   m_FrequencyGain: 1
   mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &1357045218
@@ -1846,7 +1846,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-54442326
+  m_Name: pb_Mesh188880
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
