@@ -1,6 +1,10 @@
+using Mono.Cecil.Cil;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour {
   static void SetEnabled(InputAction action, bool enabled) {
@@ -56,18 +60,20 @@ public class Player : MonoBehaviour {
   bool CanServe => !Swinging;
   bool CanSwing => !Serving && !Swinging;
 
+  Dictionary<InputAction, (Action, Action, Func<bool>)> Buttons = new();
+
+  [SerializeField] Timeval BufferDuration = Timeval.FromAnimFrames(6,60);
+  Dictionary<InputAction, int> BufferPress = new();
+  Dictionary<InputAction, int> BufferRelease = new();
+
   void Start() {
     Animator.enabled = false;
     Scope = new();
     Actions = new();
-    Actions.InGame.Red.performed += ctx => Run(Serve(RedBallPrefab));
-    Actions.InGame.Red.canceled += ctx => ReleaseServe();
-    Actions.InGame.Green.performed += ctx => Run(Serve(GreenBallPrefab));
-    Actions.InGame.Green.canceled += ctx => ReleaseServe();
-    Actions.InGame.Blue.performed += ctx => Run(Serve(BlueBallPrefab));
-    Actions.InGame.Blue.canceled += ctx => ReleaseServe();
-    Actions.InGame.Swing.performed += ctx => Run(Swing);
-    Actions.InGame.Swing.canceled += ctx => SwingReleasedSource.Fire();
+    Buttons[Actions.InGame.Red] = (() => Run(Serve(RedBallPrefab)), ReleaseServe, () => CanServe);
+    Buttons[Actions.InGame.Green] = (() => Run(Serve(GreenBallPrefab)), ReleaseServe, () => CanServe);
+    Buttons[Actions.InGame.Blue] = (() => Run(Serve(BlueBallPrefab)), ReleaseServe, () => CanServe);
+    Buttons[Actions.InGame.Swing] = (() => Run(Swing), SwingReleasedSource.Fire, () => CanSwing);
     GameManager.Instance.OnGoal.Listen(OnCheer);
   }
 
@@ -89,7 +95,7 @@ public class Player : MonoBehaviour {
 
   async Task Cheer(TaskScope scope) {
     try {
-      var cheerName = CheerNames[Mathf.RoundToInt(Random.Range(0,CheerNames.Length))];
+      var cheerName = CheerNames[Mathf.RoundToInt(UnityEngine.Random.Range(0,CheerNames.Length))];
       Cheering = true;
       Animator.CrossFade(cheerName, .25f, 0);
       await scope.Ticks(Timeval.FromSeconds(1).Ticks);
@@ -101,11 +107,12 @@ public class Player : MonoBehaviour {
 
   void FixedUpdate() {
     SetEnabled(Actions.InGame.Aim, CanAim);
-    SetEnabled(Actions.InGame.Red, CanServe);
-    SetEnabled(Actions.InGame.Green, CanServe);
-    SetEnabled(Actions.InGame.Blue, CanServe);
-    SetEnabled(Actions.InGame.Swing, CanSwing);
+    SetEnabled(Actions.InGame.Red, true);
+    SetEnabled(Actions.InGame.Green, true);
+    SetEnabled(Actions.InGame.Blue, true);
+    SetEnabled(Actions.InGame.Swing, true);
     Aim();
+    HandleButtonBuffer();
     ProjectileArcRenderer.Render(LaunchTransform.position, SwingForce * LaunchTransform.forward);
     LocalTimeScale.Value = HitStopFrames > 0 ? 0 : 1;
     Animator.Update(Time.fixedDeltaTime * LocalTimeScale.Value);
@@ -120,6 +127,28 @@ public class Player : MonoBehaviour {
     currentAim.x = Mathf.Clamp(currentPitch + axis.y * Time.fixedDeltaTime * TurnSpeed, -75, 75);
     AimTransform.rotation = Quaternion.Euler(currentAim);
     transform.rotation *= Quaternion.Euler(0, axis.x * Time.fixedDeltaTime * TurnSpeed, 0);
+  }
+
+  void HandleButtonBuffer() {
+    foreach (var b in Buttons) {
+      if (b.Key.WasPressedThisFrame())
+        BufferPress[b.Key] = Timeval.TickCount;
+      if (b.Key.WasReleasedThisFrame())
+        BufferRelease[b.Key] = Timeval.TickCount;
+
+      {
+        if (BufferPress.TryGetValue(b.Key, out int tickCount) && b.Value.Item3() && Timeval.TickCount - tickCount <= BufferDuration.Ticks) {
+          b.Value.Item1();
+          BufferPress.Remove(b.Key);
+        }
+      }
+      {
+        if (BufferRelease.TryGetValue(b.Key, out int tickCount) && /* b.Value.Item3() &&*/ Timeval.TickCount - tickCount <= BufferDuration.Ticks) {
+          b.Value.Item2();
+          BufferRelease.Remove(b.Key);
+        }
+      }
+    }
   }
 
   int ServeStart;
@@ -172,7 +201,7 @@ public class Player : MonoBehaviour {
   async Task Swing(TaskScope scope) {
     try {
       Swinging = true;
-      Animator.CrossFadeInFixedTime(KickNames[Mathf.RoundToInt(Random.Range(0,KickNames.Length))], .1f, 0);
+      Animator.CrossFadeInFixedTime(KickNames[Mathf.RoundToInt(UnityEngine.Random.Range(0,KickNames.Length))], .1f, 0);
       await scope.Any(
         Waiter.Ticks(30),
         Waiter.ListenFor(ServeReleasedSource));
