@@ -3,43 +3,40 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - Red
-  - Green
-  - Blue
+  tags: []
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  -
+  - 
   - Water
   - UI
   - Ball
+  - Ball Camera
+  - Player Camera
   - Obstacle
-  -
-  -
-  -
-  -
-  -
-  -
-  -
-  -
-  -
-  -
-  -
-  -
-  -
-  -
-  -
-  -
-  -
-  -
-  -
-  -
-  -
-  -
-  - Visual
-  - PostProcessing
+  - Mob
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
   m_SortingLayers:
   - name: Default
     uniqueID: 0
