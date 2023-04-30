@@ -80,7 +80,7 @@ ModelImporter:
       takeName: mixamo.com
       internalID: 8143144665777100803
       firstFrame: 0
-      lastFrame: 30
+      lastFrame: 10
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -108,8 +108,8 @@ ModelImporter:
       name: Toss Charge Loop
       takeName: mixamo.com
       internalID: -4210207551860703733
-      firstFrame: 28
-      lastFrame: 29
+      firstFrame: 9
+      lastFrame: 10
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -137,7 +137,7 @@ ModelImporter:
       name: Toss Release
       takeName: mixamo.com
       internalID: 7504561548226304456
-      firstFrame: 29
+      firstFrame: 9
       lastFrame: 51
       wrapMode: 0
       orientationOffsetY: 0
@@ -149,7 +149,7 @@ ModelImporter:
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1
-      loopBlendPositionXZ: 0
+      loopBlendPositionXZ: 1
       keepOriginalOrientation: 0
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 0

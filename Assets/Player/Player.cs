@@ -27,8 +27,7 @@ public class Player : MonoBehaviour {
   [Header("Controls")]
   [SerializeField] float TurnSpeed;
   [Header("Properties")]
-  [SerializeField] Timeval TossChargeMinDuration = Timeval.FromAnimFrames(30, 60);
-  [SerializeField] Timeval TossChargeMaxDuration = Timeval.FromAnimFrames(90, 60);
+  [SerializeField] AnimationCurve ThrowHeight;
   [SerializeField] float SwingForce;
   [SerializeField] float LaunchHeight;
   [SerializeField] float ContactRadius = 1;
@@ -51,22 +50,25 @@ public class Player : MonoBehaviour {
   PlayerActions Actions;
   TaskScope Scope;
   Ball Ball;
-  EventSource ServeReleased = new();
-  EventSource SwingReleased = new();
+  EventSource ServeReleasedSource = new();
+  EventSource SwingReleasedSource = new();
+  EventSource LaunchBallSource = new();
+  EventSource EndServeSource = new();
   ChargeTimer TossCharge = new();
 
   bool CanAim => true;
-  bool CanServe => !Serving && !Swinging;
-  bool CanSwing => (Ball != null && Ball.transform.position.y > 0) && !Serving && !Swinging;
+  bool CanServe => !Swinging;
+  bool CanSwing => !Serving && !Swinging;
 
   void Start() {
     Animator.enabled = false;
     Scope = new();
     Actions = new();
-    Actions.InGame.Serve.started += ctx => Scope.Run(Serve);
-    Actions.InGame.Serve.canceled += ctx => ServeReleased.Fire();
+    Actions.InGame.Serve.performed += ctx => Scope.Run(Serve);
+    Actions.InGame.Serve.canceled += ctx => ReleaseServe();
+    Actions.InGame.Serve.canceled += ctx => Debug.Log("Released");
     Actions.InGame.Swing.performed += ctx => Scope.Run(Swing);
-    Actions.InGame.Swing.canceled += ctx => SwingReleased.Fire();
+    Actions.InGame.Swing.canceled += ctx => SwingReleasedSource.Fire();
   }
 
   void OnDestroy() {
@@ -78,12 +80,7 @@ public class Player : MonoBehaviour {
     SetEnabled(Actions.InGame.Serve, CanServe);
     SetEnabled(Actions.InGame.Swing, CanSwing);
     Aim();
-    if (Ball) {
-      var v0 = SwingForce * AimTransform.forward;
-      ProjectileArcRenderer.Render(Ball.transform.position, v0);
-    } else {
-      ProjectileArcRenderer.Hide();
-    }
+    ProjectileArcRenderer.Render(LaunchTransform.position, SwingForce * LaunchTransform.forward);
     LocalTimeScale.Value = HitStopFrames > 0 ? 0 : 1;
     Animator.Update(Time.fixedDeltaTime * LocalTimeScale.Value);
     HitStopFrames = Mathf.Max(0, HitStopFrames-1);
@@ -99,28 +96,29 @@ public class Player : MonoBehaviour {
     transform.rotation *= Quaternion.Euler(0, axis.x * Time.fixedDeltaTime * TurnSpeed, 0);
   }
 
+  int ServeStart;
+  int ServeEnd;
+  bool ServeCharging;
+  public void ReleaseServe() => ServeEnd = Timeval.TickCount;
+  public void LaunchBall() => LaunchBallSource.Fire();
+  public void EndServe() => EndServeSource.Fire();
   async Task Serve(TaskScope scope) {
-    Animator.CrossFadeInFixedTime(TossWindupName, .25f, 0);
-    var released = Scope.ListenFor(ServeReleased);
-    await Scope.Delay(TossChargeMinDuration);
-    Animator.CrossFade(TossChargeName, .0f, 0);
-    await Scope.Any(
-      s => TossCharge.Ticks(s, TossChargeMaxDuration.Ticks),
-      s => released);
+    ServeStart = Timeval.TickCount;
+    ServeEnd = Timeval.TickCount;
     Serving = true;
-    Animator.CrossFade(TossReleaseName, .0f, 0);
-  }
-
-  public void LaunchBall() {
-    var chargeFactor = 1f + 2f*TossCharge.ElapsedPercent;  // range: 1-3
+    Animator.CrossFadeInFixedTime(TossName, .25f, 0);
+    await scope.ListenFor(LaunchBallSource);
+    if (ServeEnd == ServeStart)
+      ServeEnd = Timeval.TickCount;
+    var totalFrames = Timeval.TickCount - ServeStart;
+    var fraction = (float)(ServeEnd-ServeStart)/totalFrames;
+    var chargeFactor = ThrowHeight.Evaluate(fraction);
     var velocity = Vector3.up * Mathf.Sqrt(2 * Mathf.Abs(Physics.gravity.y) * LaunchHeight * chargeFactor);
     Ball = Instantiate(BallPrefab, LaunchTransform.position, LaunchTransform.rotation);
     Ball.GetComponent<Rigidbody>().velocity = velocity;
-    Destroy(Ball, 10);
-  }
-
-  public void EndServe() {
-    Animator.CrossFade(IdleName, .25f, 0);
+    Destroy(Ball.gameObject, 10);
+    await scope.ListenFor(EndServeSource);
+    Animator.CrossFadeInFixedTime(IdleName, .25f, 0);
     Serving = false;
   }
 
@@ -135,7 +133,7 @@ public class Player : MonoBehaviour {
         Destroy(Instantiate(HitVFXPrefab, hit.transform.position, transform.rotation), 3);
         var ball = hit.GetComponent<Ball>();
         ball.HitStopFrames = ContactHitStopDuration.Ticks;
-        ball.StoredVelocity = SwingForce * AimTransform.forward;
+        ball.StoredVelocity = SwingForce * LaunchTransform.forward;
         ball.TrailRenderer.enabled = true;
       }
     }
@@ -148,7 +146,7 @@ public class Player : MonoBehaviour {
       Animator.CrossFadeInFixedTime(HighKickName, .1f, 0);
       await scope.Any(
         Waiter.Ticks(30),
-        Waiter.ListenFor(ServeReleased));
+        Waiter.ListenFor(ServeReleasedSource));
       Animator.CrossFadeInFixedTime(IdleName, .25f, 0);
     } finally {
       Swinging = false;

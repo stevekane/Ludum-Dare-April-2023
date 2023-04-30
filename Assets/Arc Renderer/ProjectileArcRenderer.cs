@@ -23,17 +23,20 @@ public class ProjectileArcRenderer : MonoBehaviour {
     bool didHit = false;
     Vector3 hitStart = default;
     Vector3 hitPoint = default;
+    var count = 0;
     for (var i = 0; i < positions.Length; i++) {
       positions[i] = position;
       velocity += Time.fixedDeltaTime * Physics.gravity;
       position += Time.fixedDeltaTime * velocity;
       var delta = position - positions[i];
       var hit = Physics.Raycast(positions[i], delta.normalized, out var rayHit, delta.magnitude, LayerMask);
+      count++;
       if (!didHit && hit) {
         var toHitPoint = rayHit.point - positions[i];
         didHit = true;
         hitStart = rayHit.point-toHitPoint.normalized;
         hitPoint = rayHit.point;
+        break;
       }
     }
     if (didHit) {
@@ -45,6 +48,7 @@ public class ProjectileArcRenderer : MonoBehaviour {
     }
     LineRenderer.enabled = true;
     LineRenderer.SetPositions(positions);
+    LineRenderer.positionCount = count;
   }
 
   public void Hide() {
