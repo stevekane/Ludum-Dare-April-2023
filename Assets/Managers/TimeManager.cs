@@ -3,7 +3,7 @@ using UnityEngine;
 public class TimeManager : MonoBehaviour {
   public static TimeManager Instance;
 
-  void Start() {
+  void Awake() {
     if (Instance) {
       Destroy(gameObject);
     } else {

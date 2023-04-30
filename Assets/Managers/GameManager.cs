@@ -8,7 +8,9 @@ public enum GameState {
 public class GameManager : MonoBehaviour {
   public static GameManager Instance;
 
-  void Start() {
+  public EventSource OnGoal = new();
+
+  void Awake() {
     if (Instance) {
       Destroy(gameObject);
     } else {
