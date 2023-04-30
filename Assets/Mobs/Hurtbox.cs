@@ -15,4 +15,8 @@ public class Hurtbox : MonoBehaviour {
     if (tag == "Blue") return HurtType.Blue;
     return HurtType.Red;
   }
+
+  void Start() {
+    Owner = GetComponentInParent<Mob>();
+  }
 }
