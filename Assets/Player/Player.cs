@@ -112,6 +112,7 @@ public class Player : MonoBehaviour {
       ServeEnd = Timeval.TickCount;
     var totalFrames = Timeval.TickCount - ServeStart;
     var fraction = (float)(ServeEnd-ServeStart)/totalFrames;
+    fraction = fraction < .5 ? 0 : 1;
     var chargeFactor = ThrowHeight.Evaluate(fraction);
     var velocity = Vector3.up * Mathf.Sqrt(2 * Mathf.Abs(Physics.gravity.y) * LaunchHeight * chargeFactor);
     Ball = Instantiate(BallPrefab, LaunchTransform.position, LaunchTransform.rotation);
