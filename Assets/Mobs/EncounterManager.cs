@@ -60,7 +60,7 @@ class Wave {
   }
 
   static Vector3 GetPosition(Transform center, int y, int x) {
-s    return center.position + new Vector3(x*5 - 7.5f, 20f - y*5, 0f);
+    return center.position + new Vector3(x*5 - 7.5f, 20f - y*5, 0f);
   }
 
   public async Task Run(TaskScope scope) {
