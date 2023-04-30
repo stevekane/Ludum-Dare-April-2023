@@ -66,7 +66,12 @@ PrefabInstance:
     - target: {fileID: 210884548068443906, guid: e7d0d2b3a327ee34bb3433595eacc58a,
         type: 3}
       propertyPath: m_Name
-      value: Ball
+      value: Green Ball
+      objectReference: {fileID: 0}
+    - target: {fileID: 210884548068443906, guid: e7d0d2b3a327ee34bb3433595eacc58a,
+        type: 3}
+      propertyPath: m_TagString
+      value: Green
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
