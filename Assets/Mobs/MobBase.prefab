@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 210884548068443905}
   - component: {fileID: 1907587805179394563}
   - component: {fileID: 3126504761256984677}
-  - component: {fileID: 1315490840857908859}
   m_Layer: 10
   m_Name: MobBase
   m_TagString: Untagged
@@ -48,6 +47,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HurtSequence: 
+  RegenDuration:
+    Millis: 1000
+    FramesPerSecond: 60
+  RingPrefab: {fileID: 3526432373612926124, guid: a69a4ecc3db7d8e49b637ec1f0b40aae,
+    type: 3}
+  RingContainer: {fileID: 1021666067158121886}
 --- !u!114 &3126504761256984677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61,22 +66,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveSpeed: 3
---- !u!114 &1315490840857908859
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 210884548068443906}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 817479c67dc74ec4dbdb49ca2c5e73d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RingPrefab: {fileID: 3526432373612926124, guid: a69a4ecc3db7d8e49b637ec1f0b40aae,
-    type: 3}
-  HurtRings: []
-  RingContainer: {fileID: 1021666067158121886}
 --- !u!1 &520630296678351462
 GameObject:
   m_ObjectHideFlags: 0
@@ -89,6 +78,7 @@ GameObject:
   - component: {fileID: 7374907200948454233}
   - component: {fileID: 4316918858052837891}
   - component: {fileID: 8317400393026717864}
+  - component: {fileID: 6772207565400973753}
   m_Layer: 10
   m_Name: Body
   m_TagString: Untagged
@@ -182,6 +172,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6772207565400973753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 520630296678351462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71b2b90ff3351fd47996b3410db5305f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6931440480931530550
 GameObject:
   m_ObjectHideFlags: 0

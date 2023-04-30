@@ -1,8 +1,8 @@
 1
 R  G
- B  
+ X  
 
-R  G
+X  G
 10
  G
  G
