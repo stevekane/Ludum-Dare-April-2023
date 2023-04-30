@@ -1,5 +1,10 @@
-
+1
 R  G
  B  
 
 R  G
+10
+ G
+ G
+
+BBBB
