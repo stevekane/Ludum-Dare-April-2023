@@ -35,7 +35,9 @@ public class Player : MonoBehaviour {
   [SerializeField] Timeval ContactHitStopDuration = Timeval.FromSeconds(.5f);
   [Header("Prefabs")]
   [SerializeField] LayerMask BallLayerMask;
-  [SerializeField] Ball BallPrefab;
+  [SerializeField] Ball RedBallPrefab;
+  [SerializeField] Ball GreenBallPrefab;
+  [SerializeField] Ball BlueBallPrefab;
   [SerializeField] GameObject HitVFXPrefab;
   [Header("Audio")]
   [SerializeField] AudioClip HitSFX;
@@ -64,9 +66,12 @@ public class Player : MonoBehaviour {
     Animator.enabled = false;
     Scope = new();
     Actions = new();
-    Actions.InGame.Serve.performed += ctx => Scope.Run(Serve);
-    Actions.InGame.Serve.canceled += ctx => ReleaseServe();
-    Actions.InGame.Serve.canceled += ctx => Debug.Log("Released");
+    Actions.InGame.Red.performed += ctx => Scope.Run(Serve(RedBallPrefab));
+    Actions.InGame.Red.canceled += ctx => ReleaseServe();
+    Actions.InGame.Green.performed += ctx => Scope.Run(Serve(GreenBallPrefab));
+    Actions.InGame.Green.canceled += ctx => ReleaseServe();
+    Actions.InGame.Blue.performed += ctx => Scope.Run(Serve(BlueBallPrefab));
+    Actions.InGame.Blue.canceled += ctx => ReleaseServe();
     Actions.InGame.Swing.performed += ctx => Scope.Run(Swing);
     Actions.InGame.Swing.canceled += ctx => SwingReleasedSource.Fire();
   }
@@ -77,7 +82,9 @@ public class Player : MonoBehaviour {
 
   void FixedUpdate() {
     SetEnabled(Actions.InGame.Aim, CanAim);
-    SetEnabled(Actions.InGame.Serve, CanServe);
+    SetEnabled(Actions.InGame.Red, CanServe);
+    SetEnabled(Actions.InGame.Green, CanServe);
+    SetEnabled(Actions.InGame.Blue, CanServe);
     SetEnabled(Actions.InGame.Swing, CanSwing);
     Aim();
     ProjectileArcRenderer.Render(LaunchTransform.position, SwingForce * LaunchTransform.forward);
@@ -102,7 +109,7 @@ public class Player : MonoBehaviour {
   public void ReleaseServe() => ServeEnd = Timeval.TickCount;
   public void LaunchBall() => LaunchBallSource.Fire();
   public void EndServe() => EndServeSource.Fire();
-  async Task Serve(TaskScope scope) {
+  TaskFunc Serve(Ball ballPrefab) => async scope => {
     ServeStart = Timeval.TickCount;
     ServeEnd = Timeval.TickCount;
     Serving = true;
@@ -115,13 +122,13 @@ public class Player : MonoBehaviour {
     fraction = fraction < .5 ? 0 : 1;
     var chargeFactor = ThrowHeight.Evaluate(fraction);
     var velocity = Vector3.up * Mathf.Sqrt(2 * Mathf.Abs(Physics.gravity.y) * LaunchHeight * chargeFactor);
-    Ball = Instantiate(BallPrefab, LaunchTransform.position, LaunchTransform.rotation);
+    Ball = Instantiate(ballPrefab, LaunchTransform.position, LaunchTransform.rotation);
     Ball.GetComponent<Rigidbody>().velocity = velocity;
     Destroy(Ball.gameObject, 10);
     await scope.ListenFor(EndServeSource);
     Animator.CrossFadeInFixedTime(IdleName, .25f, 0);
     Serving = false;
-  }
+  };
 
   public void Contact() {
     Swinging = false;

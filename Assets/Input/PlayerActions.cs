@@ -28,9 +28,27 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
             ""id"": ""de0d8774-01b7-4c6a-b719-8f8effd8e91a"",
             ""actions"": [
                 {
-                    ""name"": ""Serve"",
+                    ""name"": ""Red"",
                     ""type"": ""Button"",
                     ""id"": ""df7d98bb-fe55-44da-aadc-7d095e93430b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Green"",
+                    ""type"": ""Button"",
+                    ""id"": ""af17b314-4e75-4109-acb6-129f571bdf5a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Blue"",
+                    ""type"": ""Button"",
+                    ""id"": ""31f3f14b-60f2-409c-b4da-c20cebbc9397"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -63,7 +81,7 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Serve"",
+                    ""action"": ""Red"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -74,17 +92,6 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Swing"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""d4f6570c-ebef-4ae1-b1c5-948f1fd4bceb"",
-                    ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard+Mouse"",
                     ""action"": ""Swing"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -113,12 +120,23 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""0c7636ee-70d7-4c52-8f36-97f67ffe3d4d"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""id"": ""60d05b31-b68d-458f-95e5-13b8131a6c39"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard+Mouse"",
-                    ""action"": ""Serve"",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Green"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e4ba30eb-97eb-4c60-bc69-9f83c3709b51"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Blue"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -157,7 +175,9 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
 }");
         // InGame
         m_InGame = asset.FindActionMap("InGame", throwIfNotFound: true);
-        m_InGame_Serve = m_InGame.FindAction("Serve", throwIfNotFound: true);
+        m_InGame_Red = m_InGame.FindAction("Red", throwIfNotFound: true);
+        m_InGame_Green = m_InGame.FindAction("Green", throwIfNotFound: true);
+        m_InGame_Blue = m_InGame.FindAction("Blue", throwIfNotFound: true);
         m_InGame_Swing = m_InGame.FindAction("Swing", throwIfNotFound: true);
         m_InGame_Aim = m_InGame.FindAction("Aim", throwIfNotFound: true);
     }
@@ -219,14 +239,18 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
     // InGame
     private readonly InputActionMap m_InGame;
     private IInGameActions m_InGameActionsCallbackInterface;
-    private readonly InputAction m_InGame_Serve;
+    private readonly InputAction m_InGame_Red;
+    private readonly InputAction m_InGame_Green;
+    private readonly InputAction m_InGame_Blue;
     private readonly InputAction m_InGame_Swing;
     private readonly InputAction m_InGame_Aim;
     public struct InGameActions
     {
         private @PlayerActions m_Wrapper;
         public InGameActions(@PlayerActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Serve => m_Wrapper.m_InGame_Serve;
+        public InputAction @Red => m_Wrapper.m_InGame_Red;
+        public InputAction @Green => m_Wrapper.m_InGame_Green;
+        public InputAction @Blue => m_Wrapper.m_InGame_Blue;
         public InputAction @Swing => m_Wrapper.m_InGame_Swing;
         public InputAction @Aim => m_Wrapper.m_InGame_Aim;
         public InputActionMap Get() { return m_Wrapper.m_InGame; }
@@ -238,9 +262,15 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_InGameActionsCallbackInterface != null)
             {
-                @Serve.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnServe;
-                @Serve.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnServe;
-                @Serve.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnServe;
+                @Red.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnRed;
+                @Red.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnRed;
+                @Red.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnRed;
+                @Green.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnGreen;
+                @Green.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnGreen;
+                @Green.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnGreen;
+                @Blue.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnBlue;
+                @Blue.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnBlue;
+                @Blue.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnBlue;
                 @Swing.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnSwing;
                 @Swing.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnSwing;
                 @Swing.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnSwing;
@@ -251,9 +281,15 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
             m_Wrapper.m_InGameActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Serve.started += instance.OnServe;
-                @Serve.performed += instance.OnServe;
-                @Serve.canceled += instance.OnServe;
+                @Red.started += instance.OnRed;
+                @Red.performed += instance.OnRed;
+                @Red.canceled += instance.OnRed;
+                @Green.started += instance.OnGreen;
+                @Green.performed += instance.OnGreen;
+                @Green.canceled += instance.OnGreen;
+                @Blue.started += instance.OnBlue;
+                @Blue.performed += instance.OnBlue;
+                @Blue.canceled += instance.OnBlue;
                 @Swing.started += instance.OnSwing;
                 @Swing.performed += instance.OnSwing;
                 @Swing.canceled += instance.OnSwing;
@@ -284,7 +320,9 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
     }
     public interface IInGameActions
     {
-        void OnServe(InputAction.CallbackContext context);
+        void OnRed(InputAction.CallbackContext context);
+        void OnGreen(InputAction.CallbackContext context);
+        void OnBlue(InputAction.CallbackContext context);
         void OnSwing(InputAction.CallbackContext context);
         void OnAim(InputAction.CallbackContext context);
     }
