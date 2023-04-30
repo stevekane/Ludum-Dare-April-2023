@@ -6,7 +6,6 @@ public class Hurtbox : MonoBehaviour {
   public Mob Owner { get; set; }
 
   void OnCollisionEnter(Collision collision) {
-    Debug.Log($"you hit me {gameObject.tag} vs {collision.gameObject.tag}");
     Owner.OnHurt(GetHurtType(collision.gameObject.tag));
   }
 
