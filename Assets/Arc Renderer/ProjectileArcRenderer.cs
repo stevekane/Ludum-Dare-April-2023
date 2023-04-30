@@ -29,7 +29,7 @@ public class ProjectileArcRenderer : MonoBehaviour {
       velocity += Time.fixedDeltaTime * Physics.gravity;
       position += Time.fixedDeltaTime * velocity;
       var delta = position - positions[i];
-      var hit = Physics.Raycast(positions[i], delta.normalized, out var rayHit, delta.magnitude, LayerMask);
+      var hit = Physics.Raycast(positions[i], delta.normalized, out var rayHit, delta.magnitude, LayerMask, QueryTriggerInteraction.Collide);
       count++;
       if (!didHit && hit) {
         var toHitPoint = rayHit.point - positions[i];
