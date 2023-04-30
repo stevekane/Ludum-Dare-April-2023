@@ -1301,8 +1301,9 @@ MonoBehaviour:
   BallLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  BallPrefab: {fileID: 5545995844932723750, guid: e7d0d2b3a327ee34bb3433595eacc58a,
-    type: 3}
+  RedBallPrefab: {fileID: 0}
+  GreenBallPrefab: {fileID: 0}
+  BlueBallPrefab: {fileID: 0}
   HitVFXPrefab: {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7,
     type: 3}
   HitSFX: {fileID: 8300000, guid: 7bef0064f8567430cac22499c6b93d4f, type: 3}
@@ -1603,7 +1604,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
   m_PivotOffset: {x: 0, y: 0, z: 0}
-  m_AmplitudeGain: 0.0674142
+  m_AmplitudeGain: 8.572386e-29
   m_FrequencyGain: 1
   mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &1357045218
@@ -2836,7 +2837,7 @@ PrefabInstance:
     - target: {fileID: 8603857968030545500, guid: 66be2c5fcb1429a4aa35824cd3bc5d90,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.10870659
+      value: -0.94
       objectReference: {fileID: 0}
     - target: {fileID: 8603857968030545500, guid: 66be2c5fcb1429a4aa35824cd3bc5d90,
         type: 3}
@@ -2846,7 +2847,7 @@ PrefabInstance:
     - target: {fileID: 8603857968030545500, guid: 66be2c5fcb1429a4aa35824cd3bc5d90,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 16.538813
+      value: 10.23
       objectReference: {fileID: 0}
     - target: {fileID: 8603857968030545500, guid: 66be2c5fcb1429a4aa35824cd3bc5d90,
         type: 3}
