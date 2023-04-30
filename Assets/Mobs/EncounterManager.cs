@@ -56,13 +56,14 @@ class Wave {
   }
 
   static Vector3 GetPosition(int y, int x) {
-    return new(x*5, y*5, 20f);
+    return new(x*5 - 7.5f, 20f - y*5, 40f);
   }
 
   public async Task Run(TaskScope scope) {
     await scope.Seconds(Delay);
+    var rotation = Quaternion.LookRotation(Vector3.back);
     for (int i = 0; i < Spawns.Count; i++)
-      GameObject.Instantiate(Spawns[i].Prefab, Spawns[i].Position, Quaternion.identity);
+      GameObject.Instantiate(Spawns[i].Prefab, Spawns[i].Position, rotation);
   }
 }
 
@@ -119,4 +120,6 @@ BBBB
     Encounter = Parse(Test);
     Scope.Run(Encounter.Run);
   }
+
+  void OnDestroy() => Scope.Dispose();
 }

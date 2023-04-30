@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 210884548068443905}
   - component: {fileID: 1907587805179394563}
+  - component: {fileID: 3126504761256984677}
   m_Layer: 10
   m_Name: MobBase
   m_TagString: Untagged
@@ -46,6 +47,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HurtSequence: 
+--- !u!114 &3126504761256984677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 210884548068443906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b6b11f20731fa6498521ad8e41d09e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 2
 --- !u!1 &7400310523931137327
 GameObject:
   m_ObjectHideFlags: 0
