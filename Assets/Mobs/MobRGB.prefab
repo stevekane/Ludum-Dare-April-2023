@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 42429182798320608}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 1}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6771745009850491285}
@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 60f19512641a4504792eafe8d322dbe5, type: 2}
+  - {fileID: 2100000, guid: 76fd584f175926d4fab8cfc9cd7aa778, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -203,11 +203,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1907587805179394563, guid: 884878f18522dae438a23d2470eae160,
         type: 3}
-      propertyPath: HurtSequence.Array.data[0]
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1907587805179394563, guid: 884878f18522dae438a23d2470eae160,
-        type: 3}
       propertyPath: HurtSequence.Array.data[1]
       value: 1
       objectReference: {fileID: 0}
@@ -215,21 +210,6 @@ PrefabInstance:
         type: 3}
       propertyPath: HurtSequence.Array.data[2]
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2913881085983805640, guid: 884878f18522dae438a23d2470eae160,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2913881085983805640, guid: 884878f18522dae438a23d2470eae160,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3126504761256984677, guid: 884878f18522dae438a23d2470eae160,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

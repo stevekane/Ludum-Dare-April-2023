@@ -172,7 +172,7 @@ public class Player : MonoBehaviour {
   async Task Swing(TaskScope scope) {
     try {
       Swinging = true;
-      Animator.CrossFadeInFixedTime(KickNames[Mathf.RoundToInt(Random.Range(0,2))], .1f, 0);
+      Animator.CrossFadeInFixedTime(KickNames[Mathf.RoundToInt(Random.Range(0,KickNames.Length))], .1f, 0);
       await scope.Any(
         Waiter.Ticks(30),
         Waiter.ListenFor(ServeReleasedSource));

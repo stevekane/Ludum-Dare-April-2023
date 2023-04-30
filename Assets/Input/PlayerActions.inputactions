@@ -87,17 +87,6 @@
                 },
                 {
                     "name": "",
-                    "id": "e2634c48-9b55-4d5f-8b02-a62317a04f92",
-                    "path": "<Mouse>/delta",
-                    "interactions": "",
-                    "processors": "InvertVector2(invertX=false),ScaleVector2(x=0.5,y=0.5)",
-                    "groups": "Keyboard+Mouse",
-                    "action": "Aim",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "60d05b31-b68d-458f-95e5-13b8131a6c39",
                     "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
