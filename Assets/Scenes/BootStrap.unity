@@ -1002,13 +1002,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Animator: {fileID: 766316141}
   IdleName: Idle
-  HighKickName: High Kick
-  MediumKickName: Front Kick
-  LowKickName: Low Kick
   TossName: Toss
-  TossWindupName: Toss Windup
-  TossChargeName: Toss Charge Loop
-  TossReleaseName: Toss Release
+  KickNames:
+  - High Kick
+  - High Kick 2
   CheerNames:
   - Cheering
   - Rallying
@@ -1040,12 +1037,12 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  SwingForce: 20
+  SwingForce: 30
   LaunchHeight: 3
   ContactRadius: 1
   ContactCameraShakeIntensity: 10
   ContactHitStopDuration:
-    Millis: 333.33334
+    Millis: 200
     FramesPerSecond: 60
   BallLayerMask:
     serializedVersion: 2
@@ -1344,7 +1341,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
   m_PivotOffset: {x: 0, y: 0, z: 0}
-  m_AmplitudeGain: 1.558369
+  m_AmplitudeGain: 0.08812178
   m_FrequencyGain: 1
   mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!114 &1327407718

@@ -13,13 +13,8 @@ public class Player : MonoBehaviour {
   [Header("Animation")]
   [SerializeField] Animator Animator;
   [SerializeField] string IdleName = "Idle";
-  [SerializeField] string HighKickName = "High Kick";
-  [SerializeField] string MediumKickName = "Front Kick";
-  [SerializeField] string LowKickName = "Low Kick";
   [SerializeField] string TossName = "Toss";
-  [SerializeField] string TossWindupName = "Toss Windup";
-  [SerializeField] string TossChargeName = "Toss Charge Loop";
-  [SerializeField] string TossReleaseName = "Toss Release";
+  [SerializeField] string[] KickNames = new string[2] { "High Kick", "High Kick 2" };
   [SerializeField] string[] CheerNames = new string[3] { "Cheering", "Rally", "Clapping" };
   [Header("Transforms")]
   [SerializeField] Transform AimTransform;
@@ -49,14 +44,13 @@ public class Player : MonoBehaviour {
   int HitStopFrames;
   bool Serving;
   bool Swinging;
+  bool Cheering;
   PlayerActions Actions;
   TaskScope Scope;
-  Ball Ball;
   EventSource ServeReleasedSource = new();
   EventSource SwingReleasedSource = new();
   EventSource LaunchBallSource = new();
   EventSource EndServeSource = new();
-  ChargeTimer TossCharge = new();
 
   bool CanAim => true;
   bool CanServe => !Swinging;
@@ -66,18 +60,43 @@ public class Player : MonoBehaviour {
     Animator.enabled = false;
     Scope = new();
     Actions = new();
-    Actions.InGame.Red.performed += ctx => Scope.Run(Serve(RedBallPrefab));
+    Actions.InGame.Red.performed += ctx => Run(Serve(RedBallPrefab));
     Actions.InGame.Red.canceled += ctx => ReleaseServe();
-    Actions.InGame.Green.performed += ctx => Scope.Run(Serve(GreenBallPrefab));
+    Actions.InGame.Green.performed += ctx => Run(Serve(GreenBallPrefab));
     Actions.InGame.Green.canceled += ctx => ReleaseServe();
-    Actions.InGame.Blue.performed += ctx => Scope.Run(Serve(BlueBallPrefab));
+    Actions.InGame.Blue.performed += ctx => Run(Serve(BlueBallPrefab));
     Actions.InGame.Blue.canceled += ctx => ReleaseServe();
-    Actions.InGame.Swing.performed += ctx => Scope.Run(Swing);
+    Actions.InGame.Swing.performed += ctx => Run(Swing);
     Actions.InGame.Swing.canceled += ctx => SwingReleasedSource.Fire();
+    GameManager.Instance.OnGoal.Listen(OnCheer);
   }
 
   void OnDestroy() {
     Actions.Dispose();
+  }
+
+  Task Run(TaskFunc f) {
+    Scope?.Dispose();
+    Scope = new();
+    return Scope.Run(f);
+  }
+
+  void OnCheer() {
+    if (!Cheering && !Swinging && !Serving) {
+      Run(Cheer);
+    }
+  }
+
+  async Task Cheer(TaskScope scope) {
+    try {
+      var cheerName = CheerNames[Mathf.RoundToInt(Random.Range(0,CheerNames.Length))];
+      Cheering = true;
+      Animator.CrossFade(cheerName, .25f, 0);
+      await scope.Ticks(Timeval.FromSeconds(1).Ticks);
+    } finally {
+      Cheering = false;
+      Animator.CrossFade(IdleName, .25f, 0);
+    }
   }
 
   void FixedUpdate() {
@@ -110,24 +129,27 @@ public class Player : MonoBehaviour {
   public void LaunchBall() => LaunchBallSource.Fire();
   public void EndServe() => EndServeSource.Fire();
   TaskFunc Serve(Ball ballPrefab) => async scope => {
-    ServeStart = Timeval.TickCount;
-    ServeEnd = Timeval.TickCount;
-    Serving = true;
-    Animator.CrossFadeInFixedTime(TossName, .25f, 0);
-    await scope.ListenFor(LaunchBallSource);
-    if (ServeEnd == ServeStart)
+    try {
+      ServeStart = Timeval.TickCount;
       ServeEnd = Timeval.TickCount;
-    var totalFrames = Timeval.TickCount - ServeStart;
-    var fraction = (float)(ServeEnd-ServeStart)/totalFrames;
-    fraction = fraction < .5 ? 0 : 1;
-    var chargeFactor = ThrowHeight.Evaluate(fraction);
-    var velocity = Vector3.up * Mathf.Sqrt(2 * Mathf.Abs(Physics.gravity.y) * LaunchHeight * chargeFactor);
-    Ball = Instantiate(ballPrefab, LaunchTransform.position, LaunchTransform.rotation);
-    Ball.GetComponent<Rigidbody>().velocity = velocity;
-    Destroy(Ball.gameObject, 10);
-    await scope.ListenFor(EndServeSource);
-    Animator.CrossFadeInFixedTime(IdleName, .25f, 0);
-    Serving = false;
+      Serving = true;
+      Animator.CrossFadeInFixedTime(TossName, .25f, 0);
+      await scope.ListenFor(LaunchBallSource);
+      if (ServeEnd == ServeStart)
+        ServeEnd = Timeval.TickCount;
+      var totalFrames = Timeval.TickCount - ServeStart;
+      var fraction = (float)(ServeEnd-ServeStart)/totalFrames;
+      fraction = fraction < .5 ? 0 : 1;
+      var chargeFactor = ThrowHeight.Evaluate(fraction);
+      var velocity = Vector3.up * Mathf.Sqrt(2 * Mathf.Abs(Physics.gravity.y) * LaunchHeight * chargeFactor);
+      var ball = Instantiate(ballPrefab, LaunchTransform.position, LaunchTransform.rotation);
+      ball.GetComponent<Rigidbody>().velocity = velocity;
+      Destroy(ball.gameObject, 10);
+      await scope.ListenFor(EndServeSource);
+    } finally {
+      Animator.CrossFadeInFixedTime(IdleName, .25f, 0);
+      Serving = false;
+    }
   };
 
   public void Contact() {
@@ -145,18 +167,17 @@ public class Player : MonoBehaviour {
         ball.TrailRenderer.enabled = true;
       }
     }
-    Ball = null;
   }
 
   async Task Swing(TaskScope scope) {
     try {
       Swinging = true;
-      Animator.CrossFadeInFixedTime(HighKickName, .1f, 0);
+      Animator.CrossFadeInFixedTime(KickNames[Mathf.RoundToInt(Random.Range(0,2))], .1f, 0);
       await scope.Any(
         Waiter.Ticks(30),
         Waiter.ListenFor(ServeReleasedSource));
-      Animator.CrossFadeInFixedTime(IdleName, .25f, 0);
     } finally {
+      Animator.CrossFadeInFixedTime(IdleName, .25f, 0);
       Swinging = false;
     }
   }

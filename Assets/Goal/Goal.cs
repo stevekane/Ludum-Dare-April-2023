@@ -12,5 +12,6 @@ public class Goal : MonoBehaviour {
     Destroy(Instantiate(ContactVFX, c.contacts[0].point, transform.rotation), 3);
     CameraShaker.Instance.Shake(ContactCameraShakeIntensity);
     MeshRenderer.material.color = Color.green;
+    GameManager.Instance.OnGoal.Fire();
   }
 }
