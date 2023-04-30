@@ -56,7 +56,7 @@ class Wave {
   }
 
   static Vector3 GetPosition(int y, int x) {
-    return new(x*5 - 7.5f, 20f - y*5, 40f);
+    return new(x*5 - 7.5f, 20f - y*5, 120f);
   }
 
   public async Task Run(TaskScope scope) {
@@ -96,9 +96,9 @@ public class EncounterManager : MonoBehaviour {
   Encounter Encounter = new();
   TaskScope Scope = new();
 
-  static string Test = @"5
+  [SerializeField, TextArea(10, 50)] string Test = @"5
 R  G
- B  
+ B
 
 R  G
 10
