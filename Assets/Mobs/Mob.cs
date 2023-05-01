@@ -37,6 +37,8 @@ public class Mob : MonoBehaviour {
 
   static int MaxTotalTicks = Timeval.FromSeconds(3f).Ticks;
 
+  int Score => HurtSequence.Sum(p => p.Split ? 400 : 100) * HurtSequence.Length;
+
   void Start() {
     var hurtTypes = new List<HurtType>();
     foreach(var pair in HurtSequence) {
@@ -89,6 +91,9 @@ public class Mob : MonoBehaviour {
       part.isKinematic = false;
       part.AddForce(UnityEngine.Random.onUnitSphere * UnityEngine.Random.Range(MinExplosiveForce, MaxExplosiveForce), ForceMode.Impulse);
     }
+    var msg = WorldSpaceMessageManager.Instance.SpawnMessage($"{Score}", transform.position + new Vector3(0, 0, -5f));
+    msg.LocalVelocity = (transform.position - Player.Instance.transform.position).normalized * 5f;
+    Player.Instance.Score += Score;
     OnDeath.Fire();
     Destroy(gameObject, 5);
   }

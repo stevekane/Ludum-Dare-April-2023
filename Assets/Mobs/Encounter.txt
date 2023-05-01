@@ -3,8 +3,7 @@ R  BG
  R,G,B
   rG
 
-3
- G
-   G
+10
+RR,GG
 
-B/B/B/B
+

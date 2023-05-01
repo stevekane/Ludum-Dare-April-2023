@@ -2,6 +2,7 @@ using Mono.Cecil.Cil;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -13,6 +14,7 @@ public class Player : MonoBehaviour {
     else
       action.Disable();
   }
+  public static Player Instance;
 
   [Header("Animation")]
   [SerializeField] Animator Animator;
@@ -45,6 +47,9 @@ public class Player : MonoBehaviour {
   [SerializeField] AudioSource AudioSource;
   [SerializeField] Vibrator Vibrator;
 
+  public int Score = 0;
+  [SerializeField] TextMeshProUGUI ScoreText;
+
   int HitStopFrames;
   bool Serving;
   bool Swinging;
@@ -67,6 +72,7 @@ public class Player : MonoBehaviour {
   Dictionary<InputAction, int> BufferRelease = new();
 
   void Start() {
+    Instance = this;
     Animator.enabled = false;
     Scope = new();
     Actions = new();
@@ -117,6 +123,7 @@ public class Player : MonoBehaviour {
     LocalTimeScale.Value = HitStopFrames > 0 ? 0 : 1;
     Animator.Update(Time.fixedDeltaTime * LocalTimeScale.Value);
     HitStopFrames = Mathf.Max(0, HitStopFrames-1);
+    ScoreText.text = $"Score: {Score}";
   }
 
   void Aim() {
