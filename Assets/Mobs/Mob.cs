@@ -27,6 +27,7 @@ public class Mob : MonoBehaviour {
   [SerializeField, ColorUsage(true, true)] Color GreenColor;
   [SerializeField, ColorUsage(true, true)] Color BlueColor;
   [SerializeField] Color RegenColor;
+  [SerializeField] float MinZ = 0f;
 
   public EventSource OnDeath { get; private set; } = new();
 
@@ -83,7 +84,7 @@ public class Mob : MonoBehaviour {
       AudioSource.PlayOneShot(BadImpactSounds[UnityEngine.Random.Range(0, BadImpactSounds.Length)]);
   }
 
-  void Die() {
+  public void Explode() {
     CameraShaker.Instance.Shake(10);
     GameManager.Instance.OnGoal.Fire();
     GetComponent<MoveForward>().enabled = false;
@@ -95,11 +96,25 @@ public class Mob : MonoBehaviour {
       part.isKinematic = false;
       part.AddForce(UnityEngine.Random.onUnitSphere * UnityEngine.Random.Range(MinExplosiveForce, MaxExplosiveForce), ForceMode.Impulse);
     }
+    OnDeath.Fire();
+    Destroy(gameObject, 5);
+  }
+
+  public bool Dead = false;
+  void Die() {
+    if (Dead) return;
+    Dead = true;
     var msg = WorldSpaceMessageManager.Instance.SpawnMessage($"{Score}", transform.position + new Vector3(0, 0, -5f));
     msg.LocalVelocity = (transform.position - Player.Instance.transform.position).normalized * 5f;
     Player.Instance.Score += Score;
-    OnDeath.Fire();
-    Destroy(gameObject, 5);
+    Explode();
+  }
+
+  void AttackPlayer() {
+    if (Dead) return;
+    Dead = true;
+    Player.Instance.Score -= 100;
+    Destroy(gameObject);
   }
 
   void FixedUpdate() {
@@ -114,6 +129,9 @@ public class Mob : MonoBehaviour {
       if (++SequenceIdx == HurtSequence.Length)
         Die();
     }
+
+    if (transform.position.z <= MinZ)
+      AttackPlayer();
 
     if (--RegenTicks <= 0) {
       if (RegeneratingRing > 0) {

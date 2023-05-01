@@ -48,7 +48,6 @@ public class Player : MonoBehaviour {
   [SerializeField] Vibrator Vibrator;
 
   public int Score = 0;
-  [SerializeField] TextMeshProUGUI ScoreText;
 
   int HitStopFrames;
   bool Serving;
@@ -130,7 +129,6 @@ public class Player : MonoBehaviour {
     LocalTimeScale.Value = HitStopFrames > 0 ? 0 : 1;
     Animator.Update(Time.fixedDeltaTime * LocalTimeScale.Value);
     HitStopFrames = Mathf.Max(0, HitStopFrames-1);
-    ScoreText.text = $"Score: {Score}";
   }
 
   void Aim() {

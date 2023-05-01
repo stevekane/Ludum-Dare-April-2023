@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -108,16 +109,15 @@ public class Encounter {
   public async Task Run(TaskScope scope) {
     for (int i = 0; i < Waves.Count; i++)
       await Waves[i].Run(scope);
+    await scope.Until(() =>
+      GameObject.FindObjectsOfType<Mob>().Where(m => !m.Dead).ToArray().Length == 0);
+    await scope.Millis(1000);
+    GameManager.Instance.OnGameOver();
+    Debug.Log("DONE");
   }
 }
 
 public class EncounterManager : MonoBehaviour {
-  [Serializable]
-  class ObjectMap {
-    public char Code;
-    public GameObject Prefab;
-  }
-
   [SerializeField] TextAsset File;
   Encounter Encounter = new();
   TaskScope Scope = new();
