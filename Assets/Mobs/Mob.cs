@@ -72,6 +72,11 @@ public class Mob : MonoBehaviour {
     return true;
   }
 
+  // `goodHit` is true IFF the hit did damage.
+  void OnHitCommitted(bool goodHit) {
+    Debug.Log($"commit hit: {goodHit}");
+  }
+
   void Die() {
     CameraShaker.Instance.Shake(10);
     GameManager.Instance.OnGoal.Fire();
@@ -90,8 +95,12 @@ public class Mob : MonoBehaviour {
 
   void FixedUpdate() {
     // Remove old hurtbuffer entries.
-    HurtBuffer.RemoveAll(e => e.Item2 + HurtBufferTicks < Timeval.TickCount);
+    var removed = HurtBuffer.RemoveAll(e => e.Item2 + HurtBufferTicks < Timeval.TickCount);
+    if (removed > 0) {
+      OnHitCommitted(false);
+    }
     while (ProcessHurt()) {
+      OnHitCommitted(true);
       RegenTicks = RegenDuration.Ticks;
       if (++SequenceIdx == HurtSequence.Length)
         Die();
