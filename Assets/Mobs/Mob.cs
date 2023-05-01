@@ -11,6 +11,8 @@ public class HurtPair {
 }
 
 public class Mob : MonoBehaviour {
+  public static int MaxTotalTicks = Timeval.FromSeconds(3f).Ticks;
+
   [SerializeField] AudioClip[] ImpactSounds;
   [SerializeField] AudioClip[] DeathSounds;
   [SerializeField] AudioSource AudioSource;
@@ -19,7 +21,6 @@ public class Mob : MonoBehaviour {
   [SerializeField] GameObject MainModel;
   [SerializeField] Rigidbody[] PartBodies;
   [SerializeField] public HurtPair[] HurtSequence;
-  [SerializeField] Timeval RegenDuration = Timeval.FromSeconds(1f);
   [SerializeField] MeshRenderer TargetMeshRenderer;
   [SerializeField, ColorUsage(true, true)] Color RedColor;
   [SerializeField, ColorUsage(true, true)] Color GreenColor;
@@ -31,11 +32,10 @@ public class Mob : MonoBehaviour {
   int HurtBufferTicks = Timeval.FromMillis(200).Ticks;
   List<(HurtType, int)> HurtBuffer = new();
 
+  public Timeval RegenDuration = Timeval.FromSeconds(1f);
   public int SequenceIdx = 0;
   public int RegenTicks = 0;
   public int RegeneratingRing => Mathf.Max(SequenceIdx-1, 0);
-
-  static int MaxTotalTicks = Timeval.FromSeconds(3f).Ticks;
 
   void Start() {
     var hurtTypes = new List<HurtType>();
