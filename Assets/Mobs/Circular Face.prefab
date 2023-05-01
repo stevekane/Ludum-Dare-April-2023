@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1288489841692316626}
   - component: {fileID: 1288489841692316625}
   - component: {fileID: 1288489841692316624}
+  - component: {fileID: 8427040167895194418}
   m_Layer: 0
   m_Name: Circular Face
   m_TagString: Untagged
@@ -2799,3 +2800,15 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &8427040167895194418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1288489841692316631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71b2b90ff3351fd47996b3410db5305f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

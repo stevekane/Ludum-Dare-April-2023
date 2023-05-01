@@ -43,6 +43,7 @@ public class Player : MonoBehaviour {
   [SerializeField] ProjectileArcRenderer ProjectileArcRenderer;
   [SerializeField] LocalTimeScale LocalTimeScale;
   [SerializeField] AudioSource AudioSource;
+  [SerializeField] Vibrator Vibrator;
 
   int HitStopFrames;
   bool Serving;
@@ -193,6 +194,7 @@ public class Player : MonoBehaviour {
         ball.HitStopFrames = ContactHitStopDuration.Ticks;
         ball.StoredVelocity = SwingForce * LaunchTransform.forward;
         ball.TrailRenderer.enabled = true;
+        Vibrator.Vibrate(transform.forward, ContactHitStopDuration.Ticks, .5f);
       }
     }
   }

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +11,13 @@ public class HurtPair {
 }
 
 public class Mob : MonoBehaviour {
+  [SerializeField] AudioClip[] ImpactSounds;
+  [SerializeField] AudioClip[] DeathSounds;
+  [SerializeField] AudioSource AudioSource;
+  [SerializeField] float MinExplosiveForce = 40;
+  [SerializeField] float MaxExplosiveForce = 80;
+  [SerializeField] GameObject MainModel;
+  [SerializeField] Rigidbody[] PartBodies;
   [SerializeField] HurtPair[] HurtSequence;
   [SerializeField] Timeval RegenDuration = Timeval.FromSeconds(1f);
   [SerializeField] MeshRenderer TargetMeshRenderer;
@@ -28,6 +36,23 @@ public class Mob : MonoBehaviour {
   public int RegeneratingRing => Mathf.Max(SequenceIdx-1, 0);
 
   static int MaxTotalTicks = Timeval.FromSeconds(3f).Ticks;
+
+  void Start() {
+    var hurtTypes = new List<HurtType>();
+    foreach(var pair in HurtSequence) {
+      if (!hurtTypes.Contains(pair.Left))
+        hurtTypes.Add(pair.Left);
+      if (!hurtTypes.Contains(pair.Right))
+        hurtTypes.Add(pair.Right);
+    }
+    foreach (var part in PartBodies) {
+      var type = hurtTypes[UnityEngine.Random.Range(0, hurtTypes.Count)];
+      var color = ColorForType(type);
+      part.GetComponent<MeshRenderer>().material.color = color;
+      part.GetComponent<TrailRenderer>().enabled = true;
+      part.GetComponent<TrailRenderer>().material.color = color;
+    }
+  }
 
   public void OnHurt(HurtType type) {
     HurtBuffer.Add((type, Timeval.TickCount));
@@ -48,8 +73,19 @@ public class Mob : MonoBehaviour {
   }
 
   void Die() {
+    CameraShaker.Instance.Shake(10);
+    GameManager.Instance.OnGoal.Fire();
+    GetComponent<MoveForward>().enabled = false;
+    AudioSource.PlayOneShot(DeathSounds[UnityEngine.Random.Range(0, DeathSounds.Length)]);
+    MainModel.SetActive(false);
+    foreach (var part in PartBodies) {
+      part.transform.localScale *= UnityEngine.Random.Range(.5f, 1f);
+      part.GetComponent<TrailRenderer>().time = 1;
+      part.isKinematic = false;
+      part.AddForce(UnityEngine.Random.onUnitSphere * UnityEngine.Random.Range(MinExplosiveForce, MaxExplosiveForce), ForceMode.Impulse);
+    }
     OnDeath.Fire();
-    Destroy(gameObject, .01f);
+    Destroy(gameObject, 5);
   }
 
   void FixedUpdate() {
