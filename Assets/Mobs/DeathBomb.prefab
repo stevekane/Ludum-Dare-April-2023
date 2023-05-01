@@ -46,6 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Type: 0
+  ExplosionVFX: {fileID: 210884548068443906, guid: ef04fb62361ca9a46b38311c2c6a0894,
+    type: 3}
   Radius: 10
 --- !u!1 &520630296678351462
 GameObject:

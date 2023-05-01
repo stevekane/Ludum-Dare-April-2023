@@ -1,7 +1,7 @@
 using UnityEngine;
 
 public class DeathBomb : MonoBehaviour {
-  [SerializeField] HurtType Type = HurtType.Red;
+  [SerializeField] public HurtType Type = HurtType.Red;
   [SerializeField] GameObject ExplosionVFX;
   [SerializeField] float Radius = 10f;
 
