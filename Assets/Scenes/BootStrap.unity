@@ -1885,18 +1885,18 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
-      inSlope: 2
-      outSlope: 2
+      value: 5
+      inSlope: 5
+      outSlope: 5
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
-      value: 3
-      inSlope: 2
-      outSlope: 2
+      value: 10
+      inSlope: 5
+      outSlope: 5
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -1905,7 +1905,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   SwingForce: 60
-  LaunchHeight: 3
   ContactRadius: 1
   ContactCameraShakeIntensity: 10
   ContactHitStopDuration:
@@ -2371,7 +2370,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
   m_PivotOffset: {x: 0, y: 0, z: 0}
-  m_AmplitudeGain: 0.1013863
+  m_AmplitudeGain: 2.854141e-11
   m_FrequencyGain: 1
   mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!114 &1327407718
@@ -2966,7 +2965,7 @@ PrefabInstance:
     - target: {fileID: 6191237896584518150, guid: 105646b0269fac94fb2c12f54c5966f4,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

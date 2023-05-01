@@ -28,7 +28,6 @@ public class Player : MonoBehaviour {
   [Header("Properties")]
   [SerializeField] AnimationCurve ThrowHeight;
   [SerializeField] float SwingForce;
-  [SerializeField] float LaunchHeight;
   [SerializeField] float ContactRadius = 1;
   [SerializeField] float ContactCameraShakeIntensity = 20;
   [SerializeField] Timeval ContactHitStopDuration = Timeval.FromSeconds(.5f);
@@ -168,9 +167,9 @@ public class Player : MonoBehaviour {
         ServeEnd = Timeval.TickCount;
       var totalFrames = Timeval.TickCount - ServeStart;
       var fraction = (float)(ServeEnd-ServeStart)/totalFrames;
-      fraction = fraction < .5 ? 0 : 1;
-      var chargeFactor = ThrowHeight.Evaluate(fraction);
-      var velocity = Vector3.up * Mathf.Sqrt(2 * Mathf.Abs(Physics.gravity.y) * LaunchHeight * chargeFactor);
+      fraction = fraction < .8 ? 0 : 1;
+      var launchHeight = ThrowHeight.Evaluate(fraction);
+      var velocity = Vector3.up * Mathf.Sqrt(2 * Mathf.Abs(Physics.gravity.y) * launchHeight);
       var ball = Instantiate(ballPrefab, LaunchTransform.position, LaunchTransform.rotation);
       ball.GetComponent<Rigidbody>().velocity = velocity;
       Destroy(ball.gameObject, 10);
