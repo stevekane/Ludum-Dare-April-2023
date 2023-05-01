@@ -81,7 +81,7 @@ PrefabInstance:
     - target: {fileID: 1907587805179394563, guid: 884878f18522dae438a23d2470eae160,
         type: 3}
       propertyPath: RegenDuration.Millis
-      value: 166.66667
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 1907587805179394563, guid: 884878f18522dae438a23d2470eae160,
         type: 3}
