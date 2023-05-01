@@ -74,6 +74,7 @@ public class Mob : MonoBehaviour {
 
   void LateUpdate() {
     var outerRadius = 1f;
+    TargetMeshRenderer.material.SetFloat($"_BoundThickness", .05f);
     for (var i = 0; i < 3; i++) {
       var innerRadius = outerRadius-(float)RegenDuration.Ticks/(float)MaxTotalTicks;
       var outerFillRadius = OuterRadiusForRing(i, outerRadius, innerRadius);
@@ -82,18 +83,19 @@ public class Mob : MonoBehaviour {
       TargetMeshRenderer.material.SetFloat($"_InnerRadius{i}", innerRadius);
       TargetMeshRenderer.material.SetColor($"_Color{i}0", colors.Item1);
       TargetMeshRenderer.material.SetColor($"_Color{i}1", colors.Item2);
+      TargetMeshRenderer.material.SetFloat($"_SplitThickness{i}", colors.Item3 ? .05f : 0f);
       outerRadius = innerRadius;
     }
   }
 
-  (Color, Color) ColorsForRing(int index) {
+  (Color, Color, bool) ColorsForRing(int index) {
     if (index == RegeneratingRing && RegenTicks > 0) {
-      return (RegenColor, RegenColor);
+      return (RegenColor, RegenColor, false);
     } else if (index < HurtSequence.Length && index >= SequenceIdx) {
       var fraction = (float)(RegenDuration.Ticks - RegenTicks) / RegenDuration.Ticks;
-      return (fraction * ColorForType(HurtSequence[index].Left), fraction * ColorForType(HurtSequence[index].Right));
+      return (fraction * ColorForType(HurtSequence[index].Left), fraction * ColorForType(HurtSequence[index].Right), HurtSequence[index].Split);
     } else {
-      return (Color.black, Color.black);
+      return (Color.black, Color.black, false);
     }
   }
 
