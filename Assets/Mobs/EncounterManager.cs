@@ -64,10 +64,14 @@ class Wave {
   }
 
   public async Task Run(TaskScope scope) {
-    await scope.Seconds(Delay);
-    var rotation = Quaternion.LookRotation(Vector3.back);
-    for (int i = 0; i < Spawns.Count; i++)
-      GameObject.Instantiate(Spawns[i].Prefab, Spawns[i].Position, rotation);
+    try {
+      await scope.Seconds(Delay);
+      var rotation = Quaternion.LookRotation(Vector3.back);
+      for (int i = 0; i < Spawns.Count; i++)
+        GameObject.Instantiate(Spawns[i].Prefab, Spawns[i].Position, rotation);
+    } finally {
+
+    }
   }
 }
 

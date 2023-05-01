@@ -3,12 +3,15 @@ using UnityEngine;
 public class Mob : MonoBehaviour {
   [SerializeField] HurtType[] HurtSequence;
   [SerializeField] Timeval RegenDuration = Timeval.FromSeconds(1f);
-  [SerializeField] MeshRenderer RingPrefab;
+  [SerializeField] MeshRenderer TargetMeshRenderer;
   [SerializeField] Transform RingContainer;
+  [SerializeField, ColorUsage(true, true)] Color RedColor;
+  [SerializeField, ColorUsage(true, true)] Color GreenColor;
+  [SerializeField, ColorUsage(true, true)] Color BlueColor;
 
-  MeshRenderer[] RingRenderers;
-  int SequenceIdx = 0;
-  int RegenTicks = 0;
+  public int SequenceIdx = 0;
+  public int RegenTicks = 0;
+  public int RegeneratingRing => Mathf.Max(SequenceIdx-1, 0);
 
   static int MaxTotalTicks = Timeval.FromSeconds(3f).Ticks;
 
@@ -25,37 +28,51 @@ public class Mob : MonoBehaviour {
   }
 
   void FixedUpdate() {
-    if (SequenceIdx > 0) {
-      if (--RegenTicks <= 0) {
+    if (--RegenTicks <= 0) {
+      if (RegeneratingRing > 0) {
         SequenceIdx--;
         RegenTicks = RegenDuration.Ticks;
+      } else {
+        SequenceIdx = 0;
+        RegenTicks = 0;
       }
     }
   }
 
-  void Awake() {
-    RingRenderers = new MeshRenderer[HurtSequence.Length];
-    for (var i = 0; i < HurtSequence.Length; i++)
-      RingRenderers[i] = Instantiate(RingPrefab, RingContainer);
-  }
-
   void LateUpdate() {
     var outerRadius = 1f;
-    for (var i = 0; i < HurtSequence.Length; i++) {
-      var ring = HurtSequence[i];
-      var ringRenderer = RingRenderers[i];
-      var innerRadius = outerRadius-(float)RegenDuration.Ticks/MaxTotalTicks;
-      // duration / total determines the range
-      ringRenderer.material.SetFloat("_Opacity", SequenceIdx > i ? 0f : 1f);
-      ringRenderer.material.SetFloat("_OuterRadius", outerRadius);
-      ringRenderer.material.SetFloat("_InnerRadius", innerRadius);
-      ringRenderer.material.SetColor("_Color", ring switch {
-        HurtType.Red => Color.red,
-        HurtType.Green => Color.green,
-        HurtType.Blue => Color.blue,
-        _ => Color.black
-      });
+    for (var i = 0; i < 3; i++) {
+      var innerRadius = outerRadius-(float)RegenDuration.Ticks/(float)MaxTotalTicks;
+      var outerFillRadius = OuterRadiusForRing(i, outerRadius, innerRadius);
+      var color = ColorForRing(i);
+      TargetMeshRenderer.material.SetFloat($"_OuterRadius{i}", outerFillRadius);
+      TargetMeshRenderer.material.SetFloat($"_InnerRadius{i}", innerRadius);
+      TargetMeshRenderer.material.SetColor($"_Color{i}", color);
       outerRadius = innerRadius;
+    }
+  }
+
+  Color ColorForRing(int index) {
+    if (index < HurtSequence.Length && (index == RegeneratingRing || index >= SequenceIdx)) {
+      var fraction = (float)(RegenDuration.Ticks - RegenTicks) / RegenDuration.Ticks;
+      return fraction * HurtSequence[index] switch {
+        HurtType.Red => RedColor,
+        HurtType.Green => GreenColor,
+        HurtType.Blue => BlueColor,
+        _ => Color.black
+      };
+    } else {
+      return Color.black;
+    }
+  }
+
+  float OuterRadiusForRing(int index, float outerRadius, float innerRadius) {
+    if (index == RegeneratingRing) {
+      var thickness = outerRadius - innerRadius;
+      var fraction = (float)(RegenDuration.Ticks - RegenTicks) / RegenDuration.Ticks;
+      return innerRadius + thickness * fraction;
+    } else {
+      return outerRadius;
     }
   }
 }

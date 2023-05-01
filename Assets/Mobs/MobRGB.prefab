@@ -78,6 +78,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: MobRGB
       objectReference: {fileID: 0}
+    - target: {fileID: 1021666067158121886, guid: 884878f18522dae438a23d2470eae160,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.51
+      objectReference: {fileID: 0}
+    - target: {fileID: 1021666067158121886, guid: 884878f18522dae438a23d2470eae160,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
     - target: {fileID: 1907587805179394563, guid: 884878f18522dae438a23d2470eae160,
         type: 3}
       propertyPath: HurtSequence.Array.size

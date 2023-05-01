@@ -70,6 +70,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1907587805179394563, guid: 884878f18522dae438a23d2470eae160,
         type: 3}
+      propertyPath: RegenDuration.Millis
+      value: 3000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1907587805179394563, guid: 884878f18522dae438a23d2470eae160,
+        type: 3}
       propertyPath: HurtSequence.Array.size
       value: 1
       objectReference: {fileID: 0}
