@@ -103,6 +103,11 @@ PrefabInstance:
       propertyPath: HurtSequence.Array.data[2]
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6228773953777977641, guid: 884878f18522dae438a23d2470eae160,
+        type: 3}
+      propertyPath: m_VersionIndex
+      value: 2370
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

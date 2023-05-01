@@ -4,10 +4,10 @@ public class Mob : MonoBehaviour {
   [SerializeField] HurtType[] HurtSequence;
   [SerializeField] Timeval RegenDuration = Timeval.FromSeconds(1f);
   [SerializeField] MeshRenderer TargetMeshRenderer;
-  [SerializeField] Transform RingContainer;
   [SerializeField, ColorUsage(true, true)] Color RedColor;
   [SerializeField, ColorUsage(true, true)] Color GreenColor;
   [SerializeField, ColorUsage(true, true)] Color BlueColor;
+  [SerializeField] Color RegenColor;
 
   public EventSource OnDeath { get; private set; } = new();
 
@@ -56,7 +56,9 @@ public class Mob : MonoBehaviour {
   }
 
   Color ColorForRing(int index) {
-    if (index < HurtSequence.Length && (index == RegeneratingRing || index >= SequenceIdx)) {
+    if (index == RegeneratingRing && RegenTicks > 0) {
+      return RegenColor;
+    } else if (index < HurtSequence.Length && index >= SequenceIdx) {
       var fraction = (float)(RegenDuration.Ticks - RegenTicks) / RegenDuration.Ticks;
       return fraction * HurtSequence[index] switch {
         HurtType.Red => RedColor,
