@@ -48,14 +48,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 804277f94fcba7b4fb7e197b3e91cdbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ImpactSounds:
+  GoodImpactSounds:
   - {fileID: 8300000, guid: 657578e4be6b64dbf9b09deada272e55, type: 3}
+  BadImpactSounds:
+  - {fileID: 8300000, guid: dc6614beca09347ec9b258f12d154bdd, type: 3}
   DeathSounds:
-  - {fileID: 8300000, guid: 267d42b5b5cb046e7ba5de451ae0124f, type: 3}
   - {fileID: 8300000, guid: a3d9efa2672474325b8f99fa7ed1eb96, type: 3}
   - {fileID: 8300000, guid: 0160e52869ee14eb29f7305a3526ade1, type: 3}
   - {fileID: 8300000, guid: 6059019754426494bb8f3cff32fdf133, type: 3}
-  - {fileID: 8300000, guid: b780da1a82eb34e0386f4afc024bede0, type: 3}
   AudioSource: {fileID: 8577033181424971535}
   MinExplosiveForce: 80
   MaxExplosiveForce: 140

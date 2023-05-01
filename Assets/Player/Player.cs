@@ -1,10 +1,9 @@
-using Mono.Cecil.Cil;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour {
   static void SetEnabled(InputAction action, bool enabled) {
@@ -39,6 +38,7 @@ public class Player : MonoBehaviour {
   [SerializeField] GameObject HitVFXPrefab;
   [Header("Audio")]
   [SerializeField] AudioClip HitSFX;
+  [SerializeField] AudioClip SwingSFX;
   [Header("Components")]
   [SerializeField] ProjectileArcRenderer ProjectileArcRenderer;
   [SerializeField] LocalTimeScale LocalTimeScale;
@@ -70,6 +70,8 @@ public class Player : MonoBehaviour {
     Animator.enabled = false;
     Scope = new();
     Actions = new();
+    Actions.InGame.Restart.Enable();
+    Actions.InGame.Restart.performed += ctx => Reload();
     Buttons[Actions.InGame.Red] = (() => Run(Serve(RedBallPrefab)), ReleaseServe, () => CanServe);
     Buttons[Actions.InGame.Green] = (() => Run(Serve(GreenBallPrefab)), ReleaseServe, () => CanServe);
     Buttons[Actions.InGame.Blue] = (() => Run(Serve(BlueBallPrefab)), ReleaseServe, () => CanServe);
@@ -79,6 +81,11 @@ public class Player : MonoBehaviour {
 
   void OnDestroy() {
     Actions.Dispose();
+  }
+
+  void Reload() {
+    Debug.Log("Reload");
+    SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
   }
 
   Task Run(TaskFunc f) {
@@ -202,6 +209,7 @@ public class Player : MonoBehaviour {
   async Task Swing(TaskScope scope) {
     try {
       Swinging = true;
+      AudioSource.PlayOneShot(SwingSFX);
       Animator.CrossFadeInFixedTime(KickNames[Mathf.RoundToInt(UnityEngine.Random.Range(0,KickNames.Length))], .1f, 0);
       await scope.Any(
         Waiter.Ticks(30),

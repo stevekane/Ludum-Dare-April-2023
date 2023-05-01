@@ -71,6 +71,15 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                     ""processors"": ""StickDeadzone"",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Restart"",
+                    ""type"": ""Button"",
+                    ""id"": ""0c8e305c-941f-4d6e-ae82-cc4118f9b346"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -128,6 +137,28 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                     ""action"": ""Blue"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""46db5697-07ed-4e6c-8dbc-8ae96e65fb77"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Restart"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""60569179-a0f8-40c7-bce2-d49a9b09b0de"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard+Mouse"",
+                    ""action"": ""Restart"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -169,6 +200,7 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
         m_InGame_Blue = m_InGame.FindAction("Blue", throwIfNotFound: true);
         m_InGame_Swing = m_InGame.FindAction("Swing", throwIfNotFound: true);
         m_InGame_Aim = m_InGame.FindAction("Aim", throwIfNotFound: true);
+        m_InGame_Restart = m_InGame.FindAction("Restart", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -233,6 +265,7 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_InGame_Blue;
     private readonly InputAction m_InGame_Swing;
     private readonly InputAction m_InGame_Aim;
+    private readonly InputAction m_InGame_Restart;
     public struct InGameActions
     {
         private @PlayerActions m_Wrapper;
@@ -242,6 +275,7 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
         public InputAction @Blue => m_Wrapper.m_InGame_Blue;
         public InputAction @Swing => m_Wrapper.m_InGame_Swing;
         public InputAction @Aim => m_Wrapper.m_InGame_Aim;
+        public InputAction @Restart => m_Wrapper.m_InGame_Restart;
         public InputActionMap Get() { return m_Wrapper.m_InGame; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -266,6 +300,9 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                 @Aim.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnAim;
                 @Aim.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnAim;
                 @Aim.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnAim;
+                @Restart.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnRestart;
+                @Restart.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnRestart;
+                @Restart.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnRestart;
             }
             m_Wrapper.m_InGameActionsCallbackInterface = instance;
             if (instance != null)
@@ -285,6 +322,9 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                 @Aim.started += instance.OnAim;
                 @Aim.performed += instance.OnAim;
                 @Aim.canceled += instance.OnAim;
+                @Restart.started += instance.OnRestart;
+                @Restart.performed += instance.OnRestart;
+                @Restart.canceled += instance.OnRestart;
             }
         }
     }
@@ -314,5 +354,6 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
         void OnBlue(InputAction.CallbackContext context);
         void OnSwing(InputAction.CallbackContext context);
         void OnAim(InputAction.CallbackContext context);
+        void OnRestart(InputAction.CallbackContext context);
     }
 }

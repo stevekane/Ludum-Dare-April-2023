@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,7 +12,8 @@ public class HurtPair {
 public class Mob : MonoBehaviour {
   public static int MaxTotalTicks = Timeval.FromSeconds(3f).Ticks;
 
-  [SerializeField] AudioClip[] ImpactSounds;
+  [SerializeField] AudioClip[] GoodImpactSounds;
+  [SerializeField] AudioClip[] BadImpactSounds;
   [SerializeField] AudioClip[] DeathSounds;
   [SerializeField] AudioSource AudioSource;
   [SerializeField] float MinExplosiveForce = 40;
@@ -74,7 +74,10 @@ public class Mob : MonoBehaviour {
 
   // `goodHit` is true IFF the hit did damage.
   void OnHitCommitted(bool goodHit) {
-    AudioSource.PlayOneShot(ImpactSounds[UnityEngine.Random.Range(0, ImpactSounds.Length)]);
+    if (goodHit)
+      AudioSource.PlayOneShot(GoodImpactSounds[UnityEngine.Random.Range(0, GoodImpactSounds.Length)]);
+    else
+      AudioSource.PlayOneShot(BadImpactSounds[UnityEngine.Random.Range(0, BadImpactSounds.Length)]);
   }
 
   void Die() {
