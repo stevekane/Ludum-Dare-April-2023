@@ -17,4 +17,9 @@ public class Ball : MonoBehaviour {
     }
     HitStopFrames = Mathf.Max(0, HitStopFrames-1);
   }
+
+  void OnCollisionEnter(Collision collision) {
+    if (collision.gameObject.tag == "Ground")
+      Destroy(gameObject, .01f);
+  }
 }
