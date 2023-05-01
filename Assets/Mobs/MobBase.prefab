@@ -49,11 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ImpactSounds:
-  - {fileID: 8300000, guid: 5f99e5bbd57be4af89aec4904972d80e, type: 3}
-  - {fileID: 8300000, guid: 3dc09039a16214611b002b3464ce7442, type: 3}
-  - {fileID: 8300000, guid: 959ccf0639ba54aaaa94cdbcd3407d88, type: 3}
-  - {fileID: 8300000, guid: e34ea4c5f2f644a5ea4d7d3c45aa693d, type: 3}
-  - {fileID: 8300000, guid: 4643ebd1d1d9747e4bfc19024fd1e3f7, type: 3}
+  - {fileID: 8300000, guid: 657578e4be6b64dbf9b09deada272e55, type: 3}
   DeathSounds:
   - {fileID: 8300000, guid: 267d42b5b5cb046e7ba5de451ae0124f, type: 3}
   - {fileID: 8300000, guid: a3d9efa2672474325b8f99fa7ed1eb96, type: 3}
@@ -191,14 +187,14 @@ MonoBehaviour:
   - {fileID: 4382326896578990263}
   - {fileID: 5301649941280254441}
   HurtSequence: []
-  RegenDuration:
-    Millis: 1000
-    FramesPerSecond: 60
   TargetMeshRenderer: {fileID: 6228773953777977639}
   RedColor: {r: 2.6701567, g: 0, b: 0, a: 1}
   GreenColor: {r: 0, g: 2.3245063, b: 0, a: 1}
   BlueColor: {r: 0, g: 0, b: 2.8618033, a: 1}
   RegenColor: {r: 0.05, g: 0.05, b: 0.05, a: 1}
+  RegenDuration:
+    Millis: 1000
+    FramesPerSecond: 60
   SequenceIdx: 0
   RegenTicks: 0
 --- !u!114 &3126504761256984677

@@ -74,7 +74,7 @@ public class Mob : MonoBehaviour {
 
   // `goodHit` is true IFF the hit did damage.
   void OnHitCommitted(bool goodHit) {
-    Debug.Log($"commit hit: {goodHit}");
+    AudioSource.PlayOneShot(ImpactSounds[UnityEngine.Random.Range(0, ImpactSounds.Length)]);
   }
 
   void Die() {
