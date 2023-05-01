@@ -1,8 +1,16 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
+public class HurtPair {
+  public HurtType Left;
+  public HurtType Right;
+  public bool Split;
+}
+
 public class Mob : MonoBehaviour {
-  [SerializeField] HurtType[] HurtSequence;
+  [SerializeField] HurtPair[] HurtSequence;
   [SerializeField] Timeval RegenDuration = Timeval.FromSeconds(1f);
   [SerializeField] MeshRenderer TargetMeshRenderer;
   [SerializeField, ColorUsage(true, true)] Color RedColor;
@@ -22,13 +30,21 @@ public class Mob : MonoBehaviour {
   static int MaxTotalTicks = Timeval.FromSeconds(3f).Ticks;
 
   public void OnHurt(HurtType type) {
-    if (type != HurtSequence[SequenceIdx]) {
-      HurtBuffer.Add((type, Timeval.TickCount));
-      return;
-    }
-    RegenTicks = RegenDuration.Ticks;
-    if (++SequenceIdx == HurtSequence.Length)
-      Die();
+    HurtBuffer.Add((type, Timeval.TickCount));
+  }
+
+  bool ProcessHurt() {
+    if (SequenceIdx >= HurtSequence.Length) return false;
+    var left = HurtBuffer.FindIndex(e => e.Item1 == HurtSequence[SequenceIdx].Left);
+    var right = HurtBuffer.FindLastIndex(e => e.Item1 == HurtSequence[SequenceIdx].Right);
+    if (left < 0 || right < 0) return false;
+    if (HurtSequence[SequenceIdx].Split && left == right) return false;
+
+    // Remove the higher index first to avoid changing order.
+    HurtBuffer.RemoveAt(Mathf.Max(left, right));
+    if (left != right) // Will be the same for a same-sequence.
+      HurtBuffer.RemoveAt(Mathf.Min(left, right));
+    return true;
   }
 
   void Die() {
@@ -39,9 +55,10 @@ public class Mob : MonoBehaviour {
   void FixedUpdate() {
     // Remove old hurtbuffer entries.
     HurtBuffer.RemoveAll(e => e.Item2 + HurtBufferTicks < Timeval.TickCount);
-    while (SequenceIdx < HurtSequence.Length && HurtBuffer.FindIndex(e => e.Item1 == HurtSequence[SequenceIdx]) is var idx && idx >= 0) {
-      HurtBuffer.RemoveAt(idx);
-      OnHurt(HurtSequence[SequenceIdx]);
+    while (ProcessHurt()) {
+      RegenTicks = RegenDuration.Ticks;
+      if (++SequenceIdx == HurtSequence.Length)
+        Die();
     }
 
     if (--RegenTicks <= 0) {
@@ -60,30 +77,32 @@ public class Mob : MonoBehaviour {
     for (var i = 0; i < 3; i++) {
       var innerRadius = outerRadius-(float)RegenDuration.Ticks/(float)MaxTotalTicks;
       var outerFillRadius = OuterRadiusForRing(i, outerRadius, innerRadius);
-      var color = ColorForRing(i);
+      var colors = ColorsForRing(i);
       TargetMeshRenderer.material.SetFloat($"_OuterRadius{i}", outerFillRadius);
       TargetMeshRenderer.material.SetFloat($"_InnerRadius{i}", innerRadius);
-      TargetMeshRenderer.material.SetColor($"_Color{i}0", color);
-      TargetMeshRenderer.material.SetColor($"_Color{i}1", color);
+      TargetMeshRenderer.material.SetColor($"_Color{i}0", colors.Item1);
+      TargetMeshRenderer.material.SetColor($"_Color{i}1", colors.Item2);
       outerRadius = innerRadius;
     }
   }
 
-  Color ColorForRing(int index) {
+  (Color, Color) ColorsForRing(int index) {
     if (index == RegeneratingRing && RegenTicks > 0) {
-      return RegenColor;
+      return (RegenColor, RegenColor);
     } else if (index < HurtSequence.Length && index >= SequenceIdx) {
       var fraction = (float)(RegenDuration.Ticks - RegenTicks) / RegenDuration.Ticks;
-      return fraction * HurtSequence[index] switch {
-        HurtType.Red => RedColor,
-        HurtType.Green => GreenColor,
-        HurtType.Blue => BlueColor,
-        _ => Color.black
-      };
+      return (fraction * ColorForType(HurtSequence[index].Left), fraction * ColorForType(HurtSequence[index].Right));
     } else {
-      return Color.black;
+      return (Color.black, Color.black);
     }
   }
+
+  Color ColorForType(HurtType type) => type switch {
+    HurtType.Red => RedColor,
+    HurtType.Green => GreenColor,
+    HurtType.Blue => BlueColor,
+    _ => Color.black
+  };
 
   float OuterRadiusForRing(int index, float outerRadius, float innerRadius) {
     if (index == RegeneratingRing) {
@@ -96,10 +115,19 @@ public class Mob : MonoBehaviour {
   }
 
   TaskScope Scope = new();
-  [ContextMenu("Redblue")]
+  [ContextMenu("RB")]
   async void Test() {
     OnHurt(HurtType.Red);
     await Scope.Ticks(5);
     OnHurt(HurtType.Blue);
+  }
+
+  [ContextMenu("RB, G")]
+  async void Test2() {
+    OnHurt(HurtType.Red);
+    await Scope.Ticks(5);
+    OnHurt(HurtType.Blue);
+    await Scope.Ticks(30);
+    OnHurt(HurtType.Green);
   }
 }

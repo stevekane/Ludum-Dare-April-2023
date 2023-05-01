@@ -103,6 +103,26 @@ PrefabInstance:
       propertyPath: HurtSequence.Array.data[2]
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1907587805179394563, guid: 884878f18522dae438a23d2470eae160,
+        type: 3}
+      propertyPath: HurtSequence.Array.data[1].Left
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1907587805179394563, guid: 884878f18522dae438a23d2470eae160,
+        type: 3}
+      propertyPath: HurtSequence.Array.data[2].Left
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1907587805179394563, guid: 884878f18522dae438a23d2470eae160,
+        type: 3}
+      propertyPath: HurtSequence.Array.data[1].Right
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1907587805179394563, guid: 884878f18522dae438a23d2470eae160,
+        type: 3}
+      propertyPath: HurtSequence.Array.data[2].Right
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6228773953777977641, guid: 884878f18522dae438a23d2470eae160,
         type: 3}
       propertyPath: m_VersionIndex
