@@ -47,7 +47,7 @@ public class Mob : MonoBehaviour {
     }
     foreach (var part in PartBodies) {
       var type = hurtTypes[UnityEngine.Random.Range(0, hurtTypes.Count)];
-      var color = ColorForType(type);
+      var color = MobBuilder.Instance.ColorForType(type);
       part.GetComponent<MeshRenderer>().material.color = color;
       part.GetComponent<TrailRenderer>().enabled = true;
       part.GetComponent<TrailRenderer>().material.color = color;
