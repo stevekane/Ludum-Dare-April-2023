@@ -1,5 +1,5 @@
 0
-RRRR
+R/R/rR/R
 
 
 
@@ -14,9 +14,9 @@ RRRR
 
 
 6
- X
+ R,G,B
 
 
 
 12
- Q
+ RB

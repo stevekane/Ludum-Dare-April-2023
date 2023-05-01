@@ -10,7 +10,7 @@ public class HurtPair {
 }
 
 public class Mob : MonoBehaviour {
-  [SerializeField] HurtPair[] HurtSequence;
+  [SerializeField] public HurtPair[] HurtSequence;
   [SerializeField] Timeval RegenDuration = Timeval.FromSeconds(1f);
   [SerializeField] MeshRenderer TargetMeshRenderer;
   [SerializeField, ColorUsage(true, true)] Color RedColor;
@@ -93,18 +93,11 @@ public class Mob : MonoBehaviour {
       return (RegenColor, RegenColor, false);
     } else if (index < HurtSequence.Length && index >= SequenceIdx) {
       var fraction = (float)(RegenDuration.Ticks - RegenTicks) / RegenDuration.Ticks;
-      return (fraction * ColorForType(HurtSequence[index].Left), fraction * ColorForType(HurtSequence[index].Right), HurtSequence[index].Split);
+      return (fraction * MobBuilder.Instance.ColorForType(HurtSequence[index].Left), fraction * MobBuilder.Instance.ColorForType(HurtSequence[index].Right), HurtSequence[index].Split);
     } else {
       return (Color.black, Color.black, false);
     }
   }
-
-  Color ColorForType(HurtType type) => type switch {
-    HurtType.Red => RedColor,
-    HurtType.Green => GreenColor,
-    HurtType.Blue => BlueColor,
-    _ => Color.black
-  };
 
   float OuterRadiusForRing(int index, float outerRadius, float innerRadius) {
     if (index == RegeneratingRing) {

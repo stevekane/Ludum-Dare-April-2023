@@ -20,16 +20,17 @@ public class Parser {
   public int ReadInt() {
     return int.Parse(ReadLine());
   }
+  static char[] Newline = new char[] { '\n', '\r' };
   public string ReadLine() {
     var start = Pos;
     while (!EOF && ReadChar() is var c && c != '\n')
       ;
-    return Text.Substring(start, Mathf.Max(0, Pos - start - 1));
+    return Text.Substring(start, Mathf.Max(0, Pos - start)).Trim(Newline);
   }
 }
 
 class Spawn {
-  public GameObject Prefab;
+  public string Code;
   public Vector3 Position;
 }
 
@@ -37,7 +38,7 @@ class Wave {
   int Delay;
   List<Spawn> Spawns = new();
 
-  public static Wave Parse(Parser parser, Transform center, Dictionary<char, GameObject> objectMap) {
+  public static Wave Parse(Parser parser, Transform center) {
     if (parser.EOF)
       return null;
     var wave = new Wave();
@@ -45,11 +46,11 @@ class Wave {
       wave.Delay = parser.ReadInt();
       for (int i = 0; i < 4; i++) {
         var line = parser.ReadLine();
-        for (int j = 0; j < line.Length; j++) {
-          if (objectMap.TryGetValue(line[j], out var obj)) {
-            wave.Spawns.Add(new Spawn { Prefab = obj, Position = GetPosition(center, i, j) });
-          } else if (!char.IsWhiteSpace(line[j])) {
-            Debug.LogWarning($"Unknown object code in encounter: {line[j]}");
+        for (int j = 0; line.Length > 0; j++) {
+          var code = ParseCode(ref line);
+          if (code != " ") {
+            Debug.Log($"Adding {code} at {i},{j}");
+            wave.Spawns.Add(new Spawn { Code = code, Position = GetPosition(center, i, j) });
           }
         }
       }
@@ -57,6 +58,22 @@ class Wave {
       Debug.LogError($"Parse error at {parser.Location}: {e}");
     }
     return wave;
+  }
+
+  static char[] Separators = new char[] { '/', ' ' };
+  static string ParseCode(ref string line) {
+    var i = line.IndexOfAny(Separators);
+    if (i == 0) {
+      line = line.Substring(1);
+      return " ";
+    }
+
+    if (i == -1) i = line.Length;
+    var result = line.Substring(0, i);
+    if (i < line.Length && line[i] == '/')
+      i++;
+    line = line.Substring(i);
+    return result;
   }
 
   static Vector3 GetPosition(Transform center, int y, int x) {
@@ -68,7 +85,8 @@ class Wave {
       await scope.Seconds(Delay);
       var rotation = Quaternion.LookRotation(Vector3.back);
       for (int i = 0; i < Spawns.Count; i++)
-        GameObject.Instantiate(Spawns[i].Prefab, Spawns[i].Position, rotation);
+        MobBuilder.Instance.Build(Spawns[i].Position, rotation, Spawns[i].Code);
+        //GameObject.Instantiate(Spawns[i].Prefab, Spawns[i].Position, rotation);
     } finally {
 
     }
@@ -78,9 +96,9 @@ class Wave {
 public class Encounter {
   List<Wave> Waves = new();
 
-  public static Encounter Parse(Parser parser, Transform center, Dictionary<char, GameObject> objectMap) {
+  public static Encounter Parse(Parser parser, Transform center) {
     var encounter = new Encounter();
-    while (Wave.Parse(parser, center, objectMap) is var wave && wave != null) {
+    while (Wave.Parse(parser, center) is var wave && wave != null) {
       encounter.Waves.Add(wave);
     }
     return encounter;
@@ -100,23 +118,17 @@ public class EncounterManager : MonoBehaviour {
   }
 
   [SerializeField] TextAsset File;
-  [SerializeField] ObjectMap[] ObjectMappings;
-  Dictionary<char, GameObject> ObjectMappingsDict = new();
   Encounter Encounter = new();
   TaskScope Scope = new();
 
   public Encounter Parse(string descr, Transform center) {
     var parser = new Parser(descr);
-    return Encounter.Parse(parser, center, ObjectMappingsDict);
+    return Encounter.Parse(parser, center);
   }
 
   void Start() {
-    ObjectMappingsDict = new();
-    foreach (var m in ObjectMappings)
-      ObjectMappingsDict[m.Code] = m.Prefab;
     Encounter = Parse(File.text, transform);
     Scope.Run(Encounter.Run);
   }
-
   void OnDestroy() => Scope.Dispose();
 }
