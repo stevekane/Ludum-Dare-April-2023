@@ -1,5 +1,90 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &4302924558466898051
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 8603857968030545500}
+    m_Modifications:
+    - target: {fileID: 210884548068443905, guid: b24b9816cc93d444491d4d36fa83c2cc,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 210884548068443905, guid: b24b9816cc93d444491d4d36fa83c2cc,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 210884548068443905, guid: b24b9816cc93d444491d4d36fa83c2cc,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 210884548068443905, guid: b24b9816cc93d444491d4d36fa83c2cc,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 210884548068443905, guid: b24b9816cc93d444491d4d36fa83c2cc,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 210884548068443905, guid: b24b9816cc93d444491d4d36fa83c2cc,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 210884548068443905, guid: b24b9816cc93d444491d4d36fa83c2cc,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 210884548068443905, guid: b24b9816cc93d444491d4d36fa83c2cc,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 210884548068443905, guid: b24b9816cc93d444491d4d36fa83c2cc,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 210884548068443905, guid: b24b9816cc93d444491d4d36fa83c2cc,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 210884548068443905, guid: b24b9816cc93d444491d4d36fa83c2cc,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 210884548068443906, guid: b24b9816cc93d444491d4d36fa83c2cc,
+        type: 3}
+      propertyPath: m_Name
+      value: DeathBomb
+      objectReference: {fileID: 0}
+    - target: {fileID: 5092515206226489751, guid: b24b9816cc93d444491d4d36fa83c2cc,
+        type: 3}
+      propertyPath: ExplosionVFX
+      value: 
+      objectReference: {fileID: 210884548068443906, guid: ef04fb62361ca9a46b38311c2c6a0894,
+        type: 3}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b24b9816cc93d444491d4d36fa83c2cc, type: 3}
+--- !u!4 &4132678793922109314 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 210884548068443905, guid: b24b9816cc93d444491d4d36fa83c2cc,
+    type: 3}
+  m_PrefabInstance: {fileID: 4302924558466898051}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8469649521186632029
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -105,6 +190,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 210884548068443905, guid: 884878f18522dae438a23d2470eae160,
+        type: 3}
+      insertIndex: 0
+      addedObject: {fileID: 4132678793922109314}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 884878f18522dae438a23d2470eae160, type: 3}
+--- !u!4 &8603857968030545500 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 210884548068443905, guid: 884878f18522dae438a23d2470eae160,
+    type: 3}
+  m_PrefabInstance: {fileID: 8469649521186632029}
+  m_PrefabAsset: {fileID: 0}

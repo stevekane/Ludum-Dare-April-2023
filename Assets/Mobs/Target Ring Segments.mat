@@ -103,6 +103,7 @@ Material:
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BlendOp: 0
+    - _BoundThickness: 0.05
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
@@ -117,8 +118,8 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _InnerRadius: 0.65
-    - _InnerRadius0: 0.6
-    - _InnerRadius1: 0.3
+    - _InnerRadius0: 0.5
+    - _InnerRadius1: 0.25
     - _InnerRadius2: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
@@ -128,8 +129,8 @@ Material:
     - _Opacity2: 1
     - _OuterRadius: 0.9
     - _OuterRadius0: 1
-    - _OuterRadius1: 0.6
-    - _OuterRadius2: 0.3
+    - _OuterRadius1: 0.5
+    - _OuterRadius2: 0.25
     - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
@@ -139,6 +140,9 @@ Material:
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
+    - _SplitThickness0: 0
+    - _SplitThickness1: 0
+    - _SplitThickness2: 0
     - _SrcBlend: 5
     - _SrcBlendAlpha: 1
     - _Surface: 1
@@ -148,14 +152,14 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Color0: {r: 4, g: 0, b: 0, a: 1}
-    - _Color00: {r: 1, g: 0.5039347, b: 0, a: 1}
-    - _Color01: {r: 1, g: 0.5330188, b: 0.87926173, a: 1}
+    - _Color00: {r: 0, g: 0.627451, b: 1, a: 1}
+    - _Color01: {r: 0, g: 0.627451, b: 1, a: 1}
     - _Color1: {r: 0, g: 4, b: 0, a: 1}
-    - _Color10: {r: 0, g: 0.627451, b: 1, a: 1}
+    - _Color10: {r: 1, g: 0.5039347, b: 0, a: 1}
     - _Color11: {r: 1, g: 0.5039347, b: 0, a: 1}
     - _Color2: {r: 0, g: 0, b: 4, a: 1}
-    - _Color20: {r: 0, g: 0.627451, b: 1, a: 1}
-    - _Color21: {r: 0, g: 0.627451, b: 1, a: 1}
+    - _Color20: {r: 1, g: 0.5330188, b: 0.87926173, a: 1}
+    - _Color21: {r: 1, g: 0.5330188, b: 0.87926173, a: 1}
     - _EmissionColor: {r: 0.7490196, g: 0.7490196, b: 0.7490196, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_BuildTextureStacks: []

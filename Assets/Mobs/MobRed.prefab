@@ -91,5 +91,31 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 210884548068443906, guid: 884878f18522dae438a23d2470eae160,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3045717167258465939}
   m_SourcePrefab: {fileID: 100100000, guid: 884878f18522dae438a23d2470eae160, type: 3}
+--- !u!1 &8603857968030545503 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 210884548068443906, guid: 884878f18522dae438a23d2470eae160,
+    type: 3}
+  m_PrefabInstance: {fileID: 8469649521186632029}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3045717167258465939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8603857968030545503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f9ff16a141ba1e4ea1cd3319847a982, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Type: 0
+  ExplosionVFX: {fileID: 210884548068443906, guid: ef04fb62361ca9a46b38311c2c6a0894,
+    type: 3}
+  Radius: 10
