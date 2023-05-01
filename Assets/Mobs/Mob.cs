@@ -63,7 +63,8 @@ public class Mob : MonoBehaviour {
       var color = ColorForRing(i);
       TargetMeshRenderer.material.SetFloat($"_OuterRadius{i}", outerFillRadius);
       TargetMeshRenderer.material.SetFloat($"_InnerRadius{i}", innerRadius);
-      TargetMeshRenderer.material.SetColor($"_Color{i}", color);
+      TargetMeshRenderer.material.SetColor($"_Color{i}0", color);
+      TargetMeshRenderer.material.SetColor($"_Color{i}1", color);
       outerRadius = innerRadius;
     }
   }
