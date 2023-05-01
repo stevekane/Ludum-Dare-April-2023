@@ -8,7 +8,10 @@ public enum GameState {
 public class GameManager : MonoBehaviour {
   public static GameManager Instance;
 
+  public Material[] ColorMaterials;
   public EventSource OnGoal = new();
+
+  public Material MaterialForHurtType(HurtType type) => ColorMaterials[(int)type];
 
   void Awake() {
     if (Instance) {

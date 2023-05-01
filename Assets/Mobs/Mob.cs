@@ -9,6 +9,8 @@ public class Mob : MonoBehaviour {
   [SerializeField, ColorUsage(true, true)] Color GreenColor;
   [SerializeField, ColorUsage(true, true)] Color BlueColor;
 
+  public EventSource OnDeath { get; private set; } = new();
+
   public int SequenceIdx = 0;
   public int RegenTicks = 0;
   public int RegeneratingRing => Mathf.Max(SequenceIdx-1, 0);
@@ -24,6 +26,7 @@ public class Mob : MonoBehaviour {
   }
 
   void Die() {
+    OnDeath.Fire();
     Destroy(gameObject, .01f);
   }
 
