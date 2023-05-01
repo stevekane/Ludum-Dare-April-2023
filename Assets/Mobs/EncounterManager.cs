@@ -87,7 +87,6 @@ class Wave {
       for (int i = 0; i < Spawns.Count; i++) {
         var mob = MobBuilder.Instance.Build(Spawns[i].Position, rotation, Spawns[i].Code);
         mob.RegenDuration = Timeval.FromAnimFrames(Mob.MaxTotalTicks / mob.HurtSequence.Length, 60);
-        Debug.Log($"{Mob.MaxTotalTicks} / {mob.HurtSequence.Length} = {mob.RegenDuration.Ticks}");
       }
     } finally {
 
