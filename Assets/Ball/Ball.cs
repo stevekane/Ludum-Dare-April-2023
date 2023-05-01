@@ -4,6 +4,7 @@ public class Ball : MonoBehaviour {
   public TrailRenderer TrailRenderer;
   public Rigidbody Rigidbody;
   public int HitStopFrames;
+  public GameObject VFX;
   public Vector3 StoredVelocity;
 
   void FixedUpdate() {
@@ -19,7 +20,7 @@ public class Ball : MonoBehaviour {
   }
 
   void OnCollisionEnter(Collision collision) {
-    if (collision.gameObject.tag == "Ground")
-      Destroy(gameObject, .01f);
+    Destroy(Instantiate(VFX, transform.position, transform.rotation), 3);
+    Destroy(gameObject);
   }
 }

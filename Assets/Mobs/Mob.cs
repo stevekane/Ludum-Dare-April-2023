@@ -1,6 +1,6 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [Serializable]
@@ -11,7 +11,10 @@ public class HurtPair {
 }
 
 public class Mob : MonoBehaviour {
-  [SerializeField] AudioClip[] ImpactSounds;
+  public static int MaxTotalTicks = Timeval.FromSeconds(3f).Ticks;
+
+  [SerializeField] AudioClip[] GoodImpactSounds;
+  [SerializeField] AudioClip[] BadImpactSounds;
   [SerializeField] AudioClip[] DeathSounds;
   [SerializeField] AudioSource AudioSource;
   [SerializeField] float MinExplosiveForce = 40;
@@ -19,7 +22,6 @@ public class Mob : MonoBehaviour {
   [SerializeField] GameObject MainModel;
   [SerializeField] Rigidbody[] PartBodies;
   [SerializeField] public HurtPair[] HurtSequence;
-  [SerializeField] Timeval RegenDuration = Timeval.FromSeconds(1f);
   [SerializeField] MeshRenderer TargetMeshRenderer;
   [SerializeField, ColorUsage(true, true)] Color RedColor;
   [SerializeField, ColorUsage(true, true)] Color GreenColor;
@@ -31,11 +33,10 @@ public class Mob : MonoBehaviour {
   int HurtBufferTicks = Timeval.FromMillis(200).Ticks;
   List<(HurtType, int)> HurtBuffer = new();
 
+  public Timeval RegenDuration = Timeval.FromSeconds(1f);
   public int SequenceIdx = 0;
   public int RegenTicks = 0;
   public int RegeneratingRing => Mathf.Max(SequenceIdx-1, 0);
-
-  static int MaxTotalTicks = Timeval.FromSeconds(3f).Ticks;
 
   int Score => HurtSequence.Sum(p => p.Split ? 400 : 100) * HurtSequence.Length;
 
@@ -76,7 +77,10 @@ public class Mob : MonoBehaviour {
 
   // `goodHit` is true IFF the hit did damage.
   void OnHitCommitted(bool goodHit) {
-    Debug.Log($"commit hit: {goodHit}");
+    if (goodHit)
+      AudioSource.PlayOneShot(GoodImpactSounds[UnityEngine.Random.Range(0, GoodImpactSounds.Length)]);
+    else
+      AudioSource.PlayOneShot(BadImpactSounds[UnityEngine.Random.Range(0, BadImpactSounds.Length)]);
   }
 
   void Die() {
