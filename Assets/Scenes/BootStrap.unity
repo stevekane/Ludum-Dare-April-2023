@@ -1926,6 +1926,9 @@ MonoBehaviour:
   ProjectileArcRenderer: {fileID: 1357045220}
   LocalTimeScale: {fileID: 766316142}
   AudioSource: {fileID: 578855733}
+  BufferDuration:
+    Millis: 100
+    FramesPerSecond: 60
 --- !u!95 &766316141
 Animator:
   serializedVersion: 5
@@ -2202,6 +2205,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d08fcfffa121e38439323a34b96419ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ColorMaterials:
+  - {fileID: 2100000, guid: 76fd584f175926d4fab8cfc9cd7aa778, type: 2}
+  - {fileID: 2100000, guid: 04820f31f54c9004eab46fe2ef42e9f7, type: 2}
+  - {fileID: 2100000, guid: 60f19512641a4504792eafe8d322dbe5, type: 2}
 --- !u!4 &1272582913
 Transform:
   m_ObjectHideFlags: 0

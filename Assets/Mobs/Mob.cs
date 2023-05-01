@@ -6,6 +6,8 @@ public class Mob : MonoBehaviour {
   [SerializeField] MeshRenderer RingPrefab;
   [SerializeField] Transform RingContainer;
 
+  public EventSource OnDeath { get; private set; } = new();
+
   MeshRenderer[] RingRenderers;
   int SequenceIdx = 0;
   int RegenTicks = 0;
@@ -21,6 +23,7 @@ public class Mob : MonoBehaviour {
   }
 
   void Die() {
+    OnDeath.Fire();
     Destroy(gameObject, .01f);
   }
 
