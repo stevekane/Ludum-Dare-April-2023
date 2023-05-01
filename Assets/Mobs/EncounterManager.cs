@@ -49,7 +49,6 @@ class Wave {
         for (int j = 0; line.Length > 0; j++) {
           var code = ParseCode(ref line);
           if (code != " ") {
-            Debug.Log($"Adding {code} at {i},{j}");
             wave.Spawns.Add(new Spawn { Code = code, Position = GetPosition(center, i, j) });
           }
         }
