@@ -85,7 +85,6 @@ class Wave {
       var rotation = Quaternion.LookRotation(Vector3.back);
       for (int i = 0; i < Spawns.Count; i++)
         MobBuilder.Instance.Build(Spawns[i].Position, rotation, Spawns[i].Code);
-        //GameObject.Instantiate(Spawns[i].Prefab, Spawns[i].Position, rotation);
     } finally {
 
     }
