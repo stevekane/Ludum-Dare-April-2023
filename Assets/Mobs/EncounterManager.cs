@@ -112,7 +112,6 @@ public class Encounter {
       GameObject.FindObjectsOfType<Mob>().Where(m => !m.Dead).ToArray().Length == 0);
     await scope.Millis(1000);
     GameManager.Instance.OnGameOver();
-    Debug.Log("DONE");
   }
 }
 

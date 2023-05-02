@@ -1,3 +1,39 @@
 1
-R
+ R
+
+
+
+5
+G
+
+
+
+5
+   B,G
+
+
+
+9
+
+ BG
+
+
+7
+ rR
+rR rR
+ rB
+
+9
+G/G/G
+G
+G
+G
+1
+
+
+  gR,G,B
+
+9
+RB  RG
+
 

@@ -7,6 +7,7 @@ public class Ball : MonoBehaviour {
   public int HitStopFrames;
   public GameObject VFX;
   public Vector3 StoredVelocity;
+  public bool DidHit = false;
 
   void FixedUpdate() {
     if (HitStopFrames == 0) {

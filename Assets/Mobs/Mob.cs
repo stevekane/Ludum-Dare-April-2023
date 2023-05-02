@@ -56,12 +56,13 @@ public class Mob : MonoBehaviour {
     return true;
   }
 
-  // `goodHit` is true IFF the hit did damage.
-  void OnHitCommitted(bool goodHit) {
-    if (goodHit)
-      AudioSource.PlayOneShot(GoodImpactSounds[UnityEngine.Random.Range(0, GoodImpactSounds.Length)]);
-    else
-      AudioSource.PlayOneShot(BadImpactSounds[UnityEngine.Random.Range(0, BadImpactSounds.Length)]);
+  void OnHitKill() {
+  }
+  void OnHitGood() {
+    AudioSource.PlayOneShot(GoodImpactSounds[UnityEngine.Random.Range(0, GoodImpactSounds.Length)]);
+  }
+  void OnHitBad() {
+    AudioSource.PlayOneShot(BadImpactSounds[UnityEngine.Random.Range(0, BadImpactSounds.Length)]);
   }
 
   public void Explode() {
@@ -113,15 +114,23 @@ public class Mob : MonoBehaviour {
 
   void FixedUpdate() {
     // Remove old hurtbuffer entries.
-    var removed = HurtBuffer.RemoveAll(e => e.Item2 + HurtBufferTicks < Timeval.TickCount);
-    if (removed > 0) {
-      OnHitCommitted(false);
-    }
+    var didRemove = HurtBuffer.RemoveAll(e => e.Item2 + HurtBufferTicks < Timeval.TickCount) > 0;
+    var didHit = false;
+    var didKill = false;
     while (ProcessHurt()) {
-      OnHitCommitted(true);
+      didHit = true;
       RegenTicks = RegenDuration.Ticks;
-      if (++SequenceIdx == HurtSequence.Length)
+      if (++SequenceIdx == HurtSequence.Length) {
+        didKill = true;
         Die();
+      }
+    }
+    if (didKill) {
+      OnHitKill();
+    } else if (didHit) {
+      OnHitGood();
+    } else if (didRemove) {
+      OnHitBad();
     }
 
     if (transform.position.z <= MinZ)
