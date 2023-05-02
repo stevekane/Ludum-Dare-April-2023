@@ -23,7 +23,11 @@ public class GameManager : MonoBehaviour {
     GameOver = true;
     ScoreText.text = "";
     GameOverText.text = $"Victory!\nScore: {Player.Instance.Score}";
-    Scope.Run(async (s) => {
+    Scope.Start(async s => {
+      await s.Millis(5000);
+      GameOverText.text += "\nPress 'r' to play again";
+    });
+    Scope.Start(async s => {
       var codes = new[] { "R", "G", "B", "R,G", "G,B", "R,B", "R,G,B" };
       for (int i = 0; i < 20; i++) {
         await s.Millis(UnityEngine.Random.Range(300, 1200));
@@ -35,6 +39,13 @@ public class GameManager : MonoBehaviour {
     });
   }
 
+  void OnReload() {
+    Scope.Dispose();
+    Scope = new();
+    GameOver = false;
+    GameOverText.text = "";
+  }
+
   void FixedUpdate() {
     if (!GameOver)
       ScoreText.text = $"Score: {Player.Instance.Score}";
@@ -42,6 +53,7 @@ public class GameManager : MonoBehaviour {
 
   void Awake() {
     if (Instance) {
+      Instance.OnReload();
       Destroy(gameObject);
     } else {
       DontDestroyOnLoad(gameObject);
