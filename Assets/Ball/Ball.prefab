@@ -50,6 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfb59f38706fa8a408970d44050684e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MeshRenderer: {fileID: 210884548701835155}
   TrailRenderer: {fileID: -5886384903796123892}
   Rigidbody: {fileID: -1328406192231289624}
   HitStopFrames: 0

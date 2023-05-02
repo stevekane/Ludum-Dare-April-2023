@@ -23,9 +23,6 @@ public class Mob : MonoBehaviour {
   [SerializeField] Rigidbody[] PartBodies;
   [SerializeField] public HurtPair[] HurtSequence;
   [SerializeField] MeshRenderer TargetMeshRenderer;
-  [SerializeField, ColorUsage(true, true)] Color RedColor;
-  [SerializeField, ColorUsage(true, true)] Color GreenColor;
-  [SerializeField, ColorUsage(true, true)] Color BlueColor;
   [SerializeField] Color RegenColor;
   [SerializeField] float MinZ = 0f;
 
@@ -40,23 +37,6 @@ public class Mob : MonoBehaviour {
   public int RegeneratingRing => Mathf.Max(SequenceIdx-1, 0);
 
   int Score => HurtSequence.Sum(p => p.Split ? 400 : 100) * HurtSequence.Length;
-
-  void Start() {
-    var hurtTypes = new List<HurtType>();
-    foreach(var pair in HurtSequence) {
-      if (!hurtTypes.Contains(pair.Left))
-        hurtTypes.Add(pair.Left);
-      if (!hurtTypes.Contains(pair.Right))
-        hurtTypes.Add(pair.Right);
-    }
-    foreach (var part in PartBodies) {
-      var type = hurtTypes[UnityEngine.Random.Range(0, hurtTypes.Count)];
-      var color = MobBuilder.Instance.ColorForType(type);
-      part.GetComponent<MeshRenderer>().material.color = color;
-      part.GetComponent<TrailRenderer>().enabled = true;
-      part.GetComponent<TrailRenderer>().material.color = color;
-    }
-  }
 
   public void OnHurt(HurtType type) {
     HurtBuffer.Add((type, Timeval.TickCount));
@@ -85,6 +65,20 @@ public class Mob : MonoBehaviour {
   }
 
   public void Explode() {
+    var hurtTypes = new List<HurtType>();
+    foreach(var pair in HurtSequence) {
+      if (!hurtTypes.Contains(pair.Left))
+        hurtTypes.Add(pair.Left);
+      if (!hurtTypes.Contains(pair.Right))
+        hurtTypes.Add(pair.Right);
+    }
+    foreach (var part in PartBodies) {
+      var type = hurtTypes[UnityEngine.Random.Range(0, hurtTypes.Count)];
+      var color = MobBuilder.Instance.ColorForType(type);
+      part.GetComponent<MeshRenderer>().material.color = color;
+      part.GetComponent<TrailRenderer>().enabled = true;
+      part.GetComponent<TrailRenderer>().material.color = color;
+    }
     CameraShaker.Instance.Shake(10);
     GameManager.Instance.OnGoal.Fire();
     GetComponent<MoveForward>().enabled = false;

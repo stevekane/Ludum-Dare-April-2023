@@ -152,7 +152,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 8e2a0373a4ab4fa40af2e9d8330aa081, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.33
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1586,10 +1586,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d08fcfffa121e38439323a34b96419ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ColorMaterials:
-  - {fileID: 2100000, guid: 76fd584f175926d4fab8cfc9cd7aa778, type: 2}
-  - {fileID: 2100000, guid: 04820f31f54c9004eab46fe2ef42e9f7, type: 2}
-  - {fileID: 2100000, guid: 60f19512641a4504792eafe8d322dbe5, type: 2}
   ScoreText: {fileID: 332678972}
   GameOverText: {fileID: 1886200681}
 --- !u!4 &1272582913
@@ -1691,7 +1687,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
   m_PivotOffset: {x: 0, y: 0, z: 0}
-  m_AmplitudeGain: 0.1009227
+  m_AmplitudeGain: 0.1765005
   m_FrequencyGain: 1
   mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!114 &1327407718
@@ -1875,9 +1871,9 @@ MonoBehaviour:
     type: 3}
   DeathBombPrefab: {fileID: 5092515206226489751, guid: b24b9816cc93d444491d4d36fa83c2cc,
     type: 3}
-  RedColor: {r: 2.6701567, g: 0, b: 0, a: 1}
-  GreenColor: {r: 0, g: 2.3245063, b: 0, a: 1}
-  BlueColor: {r: 0, g: 0, b: 2.8618033, a: 1}
+  RedColor: {r: 0, g: 1.4142134, b: 0.058766525, a: 1}
+  GreenColor: {r: 0, g: 0.8873497, b: 1.4142135, a: 1}
+  BlueColor: {r: 1.4142135, g: 0, b: 0.51113874, a: 1}
 --- !u!4 &1735094152
 Transform:
   m_ObjectHideFlags: 0

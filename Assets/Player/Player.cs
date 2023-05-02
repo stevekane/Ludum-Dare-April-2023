@@ -34,9 +34,7 @@ public class Player : MonoBehaviour {
   [SerializeField] Timeval ContactHitStopDuration = Timeval.FromSeconds(.5f);
   [Header("Prefabs")]
   [SerializeField] LayerMask BallLayerMask;
-  [SerializeField] Ball RedBallPrefab;
-  [SerializeField] Ball GreenBallPrefab;
-  [SerializeField] Ball BlueBallPrefab;
+  [SerializeField] Ball BallPrefab;
   [SerializeField] GameObject HitVFXPrefab;
   [Header("Audio")]
   [SerializeField] AudioClip HitSFX;
@@ -77,9 +75,9 @@ public class Player : MonoBehaviour {
     Actions = new();
     Actions.InGame.Restart.Enable();
     Actions.InGame.Restart.performed += ctx => Reload();
-    Buttons[Actions.InGame.Red] = (() => Run(Serve(RedBallPrefab)), ReleaseServe, () => CanServe);
-    Buttons[Actions.InGame.Green] = (() => Run(Serve(GreenBallPrefab)), ReleaseServe, () => CanServe);
-    Buttons[Actions.InGame.Blue] = (() => Run(Serve(BlueBallPrefab)), ReleaseServe, () => CanServe);
+    Buttons[Actions.InGame.Red] = (() => Run(Serve(BallPrefab, MobBuilder.Instance.ColorForType(HurtType.Red), "Red")), ReleaseServe, () => CanServe);
+    Buttons[Actions.InGame.Green] = (() => Run(Serve(BallPrefab, MobBuilder.Instance.ColorForType(HurtType.Green), "Green")), ReleaseServe, () => CanServe);
+    Buttons[Actions.InGame.Blue] = (() => Run(Serve(BallPrefab, MobBuilder.Instance.ColorForType(HurtType.Blue), "Blue")), ReleaseServe, () => CanServe);
     Buttons[Actions.InGame.Swing] = (() => Run(Swing), SwingReleasedSource.Fire, () => CanSwing);
     GameManager.Instance.OnGoal.Listen(OnCheer);
   }
@@ -169,7 +167,7 @@ public class Player : MonoBehaviour {
   public void ReleaseServe() => ServeEnd = Timeval.TickCount;
   public void LaunchBall() => LaunchBallSource.Fire();
   public void EndServe() => EndServeSource.Fire();
-  TaskFunc Serve(Ball ballPrefab) => async scope => {
+  TaskFunc Serve(Ball ballPrefab, Color color, string tag) => async scope => {
     try {
       ServeStart = Timeval.TickCount;
       ServeEnd = Timeval.TickCount;
@@ -184,9 +182,16 @@ public class Player : MonoBehaviour {
       var launchHeight = ThrowHeight.Evaluate(fraction);
       var velocity = Vector3.up * Mathf.Sqrt(2 * Mathf.Abs(Physics.gravity.y) * launchHeight);
       var ball = Instantiate(ballPrefab, LaunchTransform.position, LaunchTransform.rotation);
-      ball.GetComponent<Rigidbody>().velocity = velocity;
+      ball.tag = tag;
+      ball.TrailRenderer.material.color = color;
+      ball.TrailRenderer.material.SetColor("_EmissionColor", color);
+      ball.MeshRenderer.material.color = color;
+      ball.MeshRenderer.material.SetColor("_EmissionColor", color);
+      ball.Rigidbody.velocity = velocity;
       Destroy(ball.gameObject, 10);
       await scope.ListenFor(EndServeSource);
+    } catch (Exception e) {
+      Debug.LogError(e.Message);
     } finally {
       Animator.CrossFadeInFixedTime(IdleName, .25f, 0);
       Serving = false;

@@ -10,12 +10,9 @@ public enum GameState {
 public class GameManager : MonoBehaviour {
   public static GameManager Instance;
 
-  public Material[] ColorMaterials;
   public TextMeshProUGUI ScoreText;
   public TextMeshProUGUI GameOverText;
   public EventSource OnGoal = new();
-
-  public Material MaterialForHurtType(HurtType type) => ColorMaterials[(int)type];
 
   bool GameOver = false;
   TaskScope Scope = new();

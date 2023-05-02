@@ -627,11 +627,7 @@ MonoBehaviour:
   BallLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  RedBallPrefab: {fileID: 8395084562388715667, guid: e5fabce1dd327bc45bce9e9232840b48,
-    type: 3}
-  GreenBallPrefab: {fileID: 3682327370659095827, guid: bec8b9556fcf78f4dbe3be6da243c09c,
-    type: 3}
-  BlueBallPrefab: {fileID: 3682327370659095827, guid: 8b6f086426400f440a366a7d548fd486,
+  BallPrefab: {fileID: 5545995844932723750, guid: e7d0d2b3a327ee34bb3433595eacc58a,
     type: 3}
   HitVFXPrefab: {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7,
     type: 3}
@@ -641,6 +637,7 @@ MonoBehaviour:
   LocalTimeScale: {fileID: 3631088962372684520}
   AudioSource: {fileID: 3631088962425939891}
   Vibrator: {fileID: 3631088962372684521}
+  Score: 0
   BufferDuration:
     Millis: 100
     FramesPerSecond: 60

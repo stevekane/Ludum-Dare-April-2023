@@ -1,6 +1,7 @@
 using UnityEngine;
 
 public class Ball : MonoBehaviour {
+  public MeshRenderer MeshRenderer;
   public TrailRenderer TrailRenderer;
   public Rigidbody Rigidbody;
   public int HitStopFrames;

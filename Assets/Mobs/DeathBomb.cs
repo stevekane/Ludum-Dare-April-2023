@@ -10,7 +10,7 @@ public class DeathBomb : MonoBehaviour {
     Owner = GetComponentInParent<Mob>();
     Owner.OnDeath.Listen(OnDeath);
     var renderer = GetComponentInChildren<MeshRenderer>();
-    renderer.material = GameManager.Instance.MaterialForHurtType(Type);
+    renderer.material.color = MobBuilder.Instance.ColorForType(Type);
   }
 
   void OnDeath() {
