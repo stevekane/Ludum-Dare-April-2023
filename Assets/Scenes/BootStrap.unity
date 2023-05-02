@@ -734,7 +734,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
-  m_LocalRotation: {x: -0.12189644, y: -0.030971397, z: -0.0038055487, w: 0.9920522}
+  m_LocalRotation: {x: -0.12189646, y: -0.030971432, z: -0.0038055538, w: 0.9920522}
   m_LocalPosition: {x: 1, y: 2, z: -16.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1691,7 +1691,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
   m_PivotOffset: {x: 0, y: 0, z: 0}
-  m_AmplitudeGain: 0.1009227
+  m_AmplitudeGain: 0.8857636
   m_FrequencyGain: 1
   mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!114 &1327407718
@@ -1788,7 +1788,7 @@ PrefabInstance:
         type: 3}
       propertyPath: File
       value: 
-      objectReference: {fileID: 4900000, guid: 1e7a741ed3ed24e42831892a03cec31c, type: 3}
+      objectReference: {fileID: 4900000, guid: 9f13decd5fed1d149aeab5c6c7c88c88, type: 3}
     - target: {fileID: 6191237896584518149, guid: 105646b0269fac94fb2c12f54c5966f4,
         type: 3}
       propertyPath: Test
@@ -2160,7 +2160,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2071325015}
-  m_LocalRotation: {x: -0.12189644, y: -0.030971397, z: -0.0038055487, w: 0.9920522}
+  m_LocalRotation: {x: -0.12189646, y: -0.030971432, z: -0.0038055538, w: 0.9920522}
   m_LocalPosition: {x: 1, y: 2, z: -16.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

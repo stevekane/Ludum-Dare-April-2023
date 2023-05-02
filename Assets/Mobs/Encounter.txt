@@ -1,5 +1,5 @@
 1
- RR
+ R
 
 
 
@@ -24,16 +24,16 @@ rR rR
  rG
 
 9
-G/G/G/G
-
-
-
+G/G/G
+G
+G
+G
 1
 
 
- gR,G,B
+  gR,G,B
 
 9
-BB  GG
+RB  RG
 
 
