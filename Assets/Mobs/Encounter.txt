@@ -21,7 +21,7 @@ G
 7
  rR
 rR rR
- rG
+ rB
 
 9
 G/G/G
