@@ -1054,8 +1054,8 @@ RectTransform:
   m_Children:
   - {fileID: 332678970}
   - {fileID: 1886200679}
-  m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_Father: {fileID: 1272582913}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1475,7 +1475,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 422785583}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1562,7 +1563,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
   m_PivotOffset: {x: 0, y: 0, z: 0}
-  m_AmplitudeGain: 0.1768686
+  m_AmplitudeGain: 0.3276318
   m_FrequencyGain: 1
   mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!114 &1327407718
@@ -1659,7 +1660,7 @@ PrefabInstance:
         type: 3}
       propertyPath: File
       value: 
-      objectReference: {fileID: 4900000, guid: 9f13decd5fed1d149aeab5c6c7c88c88, type: 3}
+      objectReference: {fileID: 4900000, guid: 1e7a741ed3ed24e42831892a03cec31c, type: 3}
     - target: {fileID: 6191237896584518149, guid: 105646b0269fac94fb2c12f54c5966f4,
         type: 3}
       propertyPath: Test
