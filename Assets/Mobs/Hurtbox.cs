@@ -12,8 +12,10 @@ public class Hurtbox : MonoBehaviour {
       "Blue" => HurtType.Blue,
       _ => (HurtType)(-1)
     };
-    if (type == (HurtType)(-1))
+    var ball = collision.gameObject.GetComponent<Ball>();
+    if (!ball || ball.DidHit)
       return;
+    ball.DidHit = true;
     Owner.OnHurt(type);
   }
 
