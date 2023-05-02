@@ -63,22 +63,33 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "63224bb0-ef7a-404c-90c6-096bc861e7d8",
-                    "path": "<Gamepad>/buttonWest",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Red",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "9332f1df-fc1d-4722-ad89-70e30b510781",
                     "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
+                    "action": "Swing",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ef79e4d9-9aef-45c9-a157-aa19348e2dc0",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard+Mouse",
+                    "action": "Swing",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5dbf9ae7-f3db-4a0b-945c-fe60541a6b10",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard+Mouse",
                     "action": "Swing",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -96,6 +107,17 @@
                 },
                 {
                     "name": "",
+                    "id": "badf7db2-0237-4394-b53d-2bda077ead70",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "InvertVector2(invertX=false),ScaleVector2(x=0.5,y=0.5)",
+                    "groups": "Keyboard+Mouse",
+                    "action": "Aim",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "60d05b31-b68d-458f-95e5-13b8131a6c39",
                     "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
@@ -107,11 +129,33 @@
                 },
                 {
                     "name": "",
+                    "id": "62742e9c-46d1-4f42-b0c7-a66192969956",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Green",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "e4ba30eb-97eb-4c60-bc69-9f83c3709b51",
                     "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
+                    "action": "Blue",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "09f2d7ba-272a-4690-b2da-d6e372df00e1",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Blue",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -135,6 +179,28 @@
                     "processors": "",
                     "groups": "Keyboard+Mouse",
                     "action": "Restart",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "63224bb0-ef7a-404c-90c6-096bc861e7d8",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Red",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "804088e8-0c5a-4226-bd0a-7e27fe5b16be",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Red",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
